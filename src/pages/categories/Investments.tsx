@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { DashboardHeader } from "@/components/dashboard-header";
 import { TabBar } from "@/components/tab-bar";
 import { investments } from "@/data/mockData";
 import { formatCurrency } from "@/lib/formatters";
@@ -37,26 +36,24 @@ export default function Investments() {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      <DashboardHeader />
-      
+    <div className="min-h-screen bg-gray-900 pb-20">      
       <div className="p-4 space-y-6">
         <div className="flex items-center space-x-2">
           <PiggyBank className="text-purple-500" size={24} />
-          <h1 className="text-2xl font-bold text-finance-dark">Savings & Investments</h1>
+          <h1 className="text-2xl font-bold text-white">Savings & Investments</h1>
         </div>
         
-        <Card className="border-purple-100">
+        <Card className="border-purple-800 bg-gray-800/50 text-white">
           <CardContent className="pt-6 pb-4">
             <div className="flex flex-col space-y-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <div className="text-sm text-gray-500">Total Value</div>
-                  <div className="text-3xl font-bold text-finance-dark">{formatCurrency(totalInvestments)}</div>
+                  <div className="text-sm text-gray-400">Total Value</div>
+                  <div className="text-3xl font-bold text-white">{formatCurrency(totalInvestments)}</div>
                 </div>
-                <div className="flex items-center bg-purple-50 rounded-lg px-3 py-1">
-                  <TrendingUp size={16} className="text-purple-500 mr-1" />
-                  <span className="text-sm font-medium text-purple-700">+8.4%</span>
+                <div className="flex items-center bg-purple-900/50 rounded-lg px-3 py-1">
+                  <TrendingUp size={16} className="text-purple-400 mr-1" />
+                  <span className="text-sm font-medium text-purple-300">+8.4%</span>
                 </div>
               </div>
               
@@ -74,7 +71,7 @@ export default function Investments() {
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-gray-800/50 border-gray-700 text-white">
           <CardHeader className="pb-2">
             <div className="flex items-center space-x-2">
               <PiggyBank size={18} />
@@ -83,24 +80,24 @@ export default function Investments() {
           </CardHeader>
           <CardContent>
             <div className="flex justify-between mb-4">
-              <div className="text-sm text-gray-500">Total Value</div>
+              <div className="text-sm text-gray-400">Total Value</div>
               <div className="font-medium">{formatCurrency(stockTotal)}</div>
             </div>
             
             <div className="space-y-3">
               {stockInvestments.map(investment => (
-                <div key={investment.id} className="flex justify-between items-center border-b pb-3 last:border-0">
+                <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
                   <div className="flex items-center">
                     {investment.logo ? (
                       <img src={investment.logo} alt={investment.name} className="w-8 h-8 mr-3 rounded-full" />
                     ) : (
-                      <div className="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center text-xs">
+                      <div className="w-8 h-8 bg-gray-700 rounded-full mr-3 flex items-center justify-center text-xs">
                         {investment.name.charAt(0)}
                       </div>
                     )}
                     <div>
                       <div className="font-medium">{investment.name}</div>
-                      <div className="text-sm text-gray-500">{formatCurrency(investment.value)}</div>
+                      <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -119,7 +116,7 @@ export default function Investments() {
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-gray-800/50 border-gray-700 text-white">
           <CardHeader className="pb-2">
             <div className="flex items-center space-x-2">
               <Landmark size={18} />
@@ -128,16 +125,16 @@ export default function Investments() {
           </CardHeader>
           <CardContent>
             <div className="flex justify-between mb-4">
-              <div className="text-sm text-gray-500">Total Value</div>
+              <div className="text-sm text-gray-400">Total Value</div>
               <div className="font-medium">{formatCurrency(savingsTotal)}</div>
             </div>
             
             <div className="space-y-3">
               {savingsInvestments.map(investment => (
-                <div key={investment.id} className="flex justify-between items-center border-b pb-3 last:border-0">
+                <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
                   <div>
                     <div className="font-medium">{investment.name}</div>
-                    <div className="text-sm text-gray-500">{formatCurrency(investment.value)}</div>
+                    <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-24 h-12">
@@ -155,7 +152,7 @@ export default function Investments() {
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-gray-800/50 border-gray-700 text-white">
           <CardHeader className="pb-2">
             <div className="flex items-center space-x-2">
               <Landmark size={18} />
@@ -164,16 +161,16 @@ export default function Investments() {
           </CardHeader>
           <CardContent>
             <div className="flex justify-between mb-4">
-              <div className="text-sm text-gray-500">Total Value</div>
+              <div className="text-sm text-gray-400">Total Value</div>
               <div className="font-medium">{formatCurrency(retirementTotal)}</div>
             </div>
             
             <div className="space-y-3">
               {retirementInvestments.map(investment => (
-                <div key={investment.id} className="flex justify-between items-center border-b pb-3 last:border-0">
+                <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
                   <div>
                     <div className="font-medium">{investment.name}</div>
-                    <div className="text-sm text-gray-500">{formatCurrency(investment.value)}</div>
+                    <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-24 h-12">
@@ -191,7 +188,7 @@ export default function Investments() {
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-gray-800/50 border-gray-700 text-white">
           <CardHeader className="pb-2">
             <div className="flex items-center space-x-2">
               <GraduationCap size={18} />
@@ -200,16 +197,16 @@ export default function Investments() {
           </CardHeader>
           <CardContent>
             <div className="flex justify-between mb-4">
-              <div className="text-sm text-gray-500">Total Value</div>
+              <div className="text-sm text-gray-400">Total Value</div>
               <div className="font-medium">{formatCurrency(childrenTotal)}</div>
             </div>
             
             <div className="space-y-3">
               {childrenInvestments.map(investment => (
-                <div key={investment.id} className="flex justify-between items-center border-b pb-3 last:border-0">
+                <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
                   <div>
                     <div className="font-medium">{investment.name}</div>
-                    <div className="text-sm text-gray-500">{formatCurrency(investment.value)}</div>
+                    <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-24 h-12">
@@ -228,7 +225,7 @@ export default function Investments() {
         </Card>
       </div>
       
-      <TabBar currentTab="portfolio" />
+      <TabBar currentTab="portfolio" showAccountSwitcher={true} />
     </div>
   );
 }
