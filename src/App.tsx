@@ -13,6 +13,7 @@ import Vehicles from "./pages/categories/Vehicles";
 import Insurance from "./pages/categories/Insurance";
 import Valuables from "./pages/categories/Valuables";
 import Loans from "./pages/categories/Loans";
+import Furniture from "./pages/categories/Furniture";
 import { AiAssistant } from "./components/ai-assistant";
 
 const queryClient = new QueryClient();
@@ -32,7 +33,7 @@ const App = () => (
           <Route path="/insurance" element={<Insurance />} />
           <Route path="/valuables" element={<Valuables />} />
           <Route path="/loans" element={<Loans />} />
-          <Route path="/furniture" element={<Valuables />} />
+          <Route path="/furniture" element={<Furniture />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <AiAssistant />

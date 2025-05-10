@@ -61,6 +61,11 @@ export interface Valuable {
   imageUrl?: string;
 }
 
+export interface Furniture extends Valuable {
+  dueDate?: string;
+  invited?: string[];
+}
+
 export interface Liability {
   id: string;
   name: string;
