@@ -1,8 +1,6 @@
 
 import { useState } from "react";
 import { TabBar } from "@/components/tab-bar";
-import { TransactionPopup } from "@/components/transaction-popup";
-import { SavingsPopup } from "@/components/savings-popup";
 import { toast } from "@/components/ui/use-toast";
 import { 
   spendingCategories, 
@@ -13,20 +11,15 @@ import {
 } from "@/data/spendingData";
 import { Treemap, ResponsiveContainer } from "recharts";
 import { ChartContainer } from "@/components/ui/chart";
+import { FullScreenPopup } from "@/components/fullscreen-popup";
 
 export default function Cash() {
   const [selectedCategory, setSelectedCategory] = useState<SpendingCategory | null>(null);
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-  const [isSavingsModalOpen, setIsSavingsModalOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   
   const handleCategoryClick = (category: SpendingCategory) => {
     setSelectedCategory(category);
-    
-    if (category.id === "savings") {
-      setIsSavingsModalOpen(true);
-    } else {
-      setIsCategoryModalOpen(true);
-    }
+    setIsPopupOpen(true);
     
     toast({
       title: `${category.name} selected`,
@@ -157,18 +150,10 @@ export default function Cash() {
       
       <TabBar currentTab="home" />
       
-      {/* Regular category popup */}
-      <TransactionPopup
-        open={isCategoryModalOpen}
-        onOpenChange={setIsCategoryModalOpen}
-        category={selectedCategory}
-        transactions={transactions}
-      />
-      
-      {/* Special savings popup */}
-      <SavingsPopup
-        open={isSavingsModalOpen}
-        onOpenChange={setIsSavingsModalOpen}
+      {/* New fullscreen popup replacing both previous popups */}
+      <FullScreenPopup
+        open={isPopupOpen}
+        onOpenChange={setIsPopupOpen}
         category={selectedCategory}
         transactions={transactions}
         savingsProjects={savingsProjects}
