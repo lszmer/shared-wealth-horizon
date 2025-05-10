@@ -55,6 +55,13 @@ export default function Cash() {
     
     if (!width || !height) return null;
     
+    // Check if size is defined before calling toLocaleString
+    const formattedSize = size !== undefined ? 
+      size.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }) : '$0.00';
+    
     return (
       <g>
         <rect
@@ -86,10 +93,7 @@ export default function Cash() {
           fill="#fff"
           fontSize={14}
         >
-          {size.toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'USD'
-          })}
+          {formattedSize}
         </text>
       </g>
     );
@@ -128,7 +132,7 @@ export default function Cash() {
                 <Treemap
                   data={[treeData]}
                   dataKey="size"
-                  ratio={4/3}
+                  // Removed the invalid 'ratio' prop
                   stroke="#fff"
                   fill="#8884d8"
                   content={<CustomizedContent />}
