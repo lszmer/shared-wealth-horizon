@@ -69,6 +69,11 @@ export default {
 					neutral: '#8E9196',
 					accent: '#9b87f5',
 					dark: '#1A1F2C'
+				},
+				mint: {
+					600: '#10B981',
+					500: '#10B981',
+					400: '#34D399',
 				}
 			},
 			borderRadius: {
@@ -97,7 +102,10 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+			},
+			fontFamily: {
+				sans: ['Inter', 'Helvetica Neue', 'system-ui', 'sans-serif'],
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

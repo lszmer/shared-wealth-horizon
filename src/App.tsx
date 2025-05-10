@@ -13,6 +13,7 @@ import Vehicles from "./pages/categories/Vehicles";
 import Insurance from "./pages/categories/Insurance";
 import Valuables from "./pages/categories/Valuables";
 import Loans from "./pages/categories/Loans";
+import FamilyAccountManagement from "./pages/FamilyAccountManagement";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/insurance" element={<Insurance />} />
           <Route path="/valuables" element={<Valuables />} />
           <Route path="/loans" element={<Loans />} />
+          <Route path="/family" element={<FamilyAccountManagement />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
