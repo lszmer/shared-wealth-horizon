@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { CategoryTile } from "@/components/category-tile";
 import { TabBar } from "@/components/tab-bar";
-import { Briefcase, Edit } from "lucide-react";
+import { Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TileEditorDialog } from "@/components/tile-editor-dialog";
 import { TileVisibilityProvider, useTileVisibility } from "@/context/TileVisibilityContext";
@@ -29,7 +29,6 @@ function PortfolioContent() {
             className="flex items-center gap-1 border-gray-700 bg-gray-800 hover:bg-gray-700 text-white"
             onClick={() => setIsEditMode(true)}
           >
-            <Edit size={16} />
             Edit Tiles
           </Button>
         </div>

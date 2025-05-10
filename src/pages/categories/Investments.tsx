@@ -61,12 +61,13 @@ export default function Investments() {
                 <PortfolioChart data={summaryChartData} color="#9b87f5" height={160} />
               </div>
               
-              <TimeFilter 
-                options={["1D", "1W", "1M", "1Y", "MAX"]} 
-                currentOption={timeframe}
-                onChange={handleTimeframeChange}
-                className="justify-start"
-              />
+              <div className="w-full px-2">
+                <TimeFilter 
+                  options={["1D", "1W", "1M", "1Y", "MAX"]} 
+                  currentOption={timeframe}
+                  onChange={handleTimeframeChange}
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -87,7 +88,7 @@ export default function Investments() {
             <div className="space-y-3">
               {stockInvestments.map(investment => (
                 <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
-                  <div className="flex items-center">
+                  <div className="flex items-center flex-1">
                     {investment.logo ? (
                       <img src={investment.logo} alt={investment.name} className="w-8 h-8 mr-3 rounded-full" />
                     ) : (
@@ -100,7 +101,7 @@ export default function Investments() {
                       <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 ml-2">
                     <div className="w-24 h-12">
                       <PortfolioChart 
                         data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
@@ -132,11 +133,11 @@ export default function Investments() {
             <div className="space-y-3">
               {savingsInvestments.map(investment => (
                 <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
-                  <div>
+                  <div className="flex-1">
                     <div className="font-medium">{investment.name}</div>
                     <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 ml-2">
                     <div className="w-24 h-12">
                       <PortfolioChart 
                         data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
@@ -168,11 +169,11 @@ export default function Investments() {
             <div className="space-y-3">
               {retirementInvestments.map(investment => (
                 <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
-                  <div>
+                  <div className="flex-1">
                     <div className="font-medium">{investment.name}</div>
                     <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 ml-2">
                     <div className="w-24 h-12">
                       <PortfolioChart 
                         data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
@@ -204,11 +205,11 @@ export default function Investments() {
             <div className="space-y-3">
               {childrenInvestments.map(investment => (
                 <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
-                  <div>
+                  <div className="flex-1">
                     <div className="font-medium">{investment.name}</div>
                     <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 ml-2">
                     <div className="w-24 h-12">
                       <PortfolioChart 
                         data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 

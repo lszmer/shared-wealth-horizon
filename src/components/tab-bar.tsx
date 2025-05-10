@@ -1,5 +1,5 @@
 
-import { Home, LayoutGrid, Settings } from "lucide-react";
+import { Home, LayoutGrid } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { AccountSwitcher } from "@/components/account-switcher";
@@ -18,7 +18,6 @@ export function TabBar({ currentTab = "home", showAccountSwitcher = false }: Tab
   const tabs = [
     { id: "home", icon: Home, label: "Cash", path: "/" },
     { id: "portfolio", icon: LayoutGrid, label: "Portfolio", path: "/portfolio" },
-    { id: "settings", icon: Settings, label: "Settings", path: "/family" },
   ];
 
   const handleAccountChange = (account: Account) => {
@@ -30,20 +29,6 @@ export function TabBar({ currentTab = "home", showAccountSwitcher = false }: Tab
       {tabs.map((tab) => {
         const isActive = currentTab === tab.id;
         const IconComponent = tab.icon;
-        
-        if (tab.id === "settings" && showAccountSwitcher) {
-          return (
-            <div key={tab.id} className="flex flex-col items-center px-3 py-1">
-              <AccountSwitcher
-                accounts={accounts}
-                currentAccount={currentAccount}
-                onAccountChange={handleAccountChange}
-                bottomTab={true}
-              />
-              <span className="text-xs mt-1 font-medium text-gray-400">{tab.label}</span>
-            </div>
-          );
-        }
         
         return (
           <Link
@@ -68,6 +53,18 @@ export function TabBar({ currentTab = "home", showAccountSwitcher = false }: Tab
           </Link>
         );
       })}
+      
+      {showAccountSwitcher && (
+        <div className="flex flex-col items-center px-3 py-1">
+          <AccountSwitcher
+            accounts={accounts}
+            currentAccount={currentAccount}
+            onAccountChange={handleAccountChange}
+            bottomTab={true}
+          />
+          <span className="text-xs mt-1 font-medium text-gray-400">Account</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -25,12 +25,12 @@ export function TimeFilter({
   };
 
   return (
-    <div className={cn("flex gap-4 justify-between text-sm", className)}>
+    <div className={cn("flex justify-between w-full text-sm", className)}>
       {options.map((option) => (
         <button
           key={option}
           className={cn(
-            "px-1 py-0.5",
+            "px-1 py-0.5 flex-1 text-center",
             selected === option
               ? "border-b-2 border-finance-dark font-medium"
               : "text-gray-400"
