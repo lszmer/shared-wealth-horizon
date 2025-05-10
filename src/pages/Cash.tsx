@@ -138,7 +138,7 @@ export default function Cash() {
                   stroke="#fff"
                   fill="#222222"
                   content={<CustomizedContent />}
-                  animationEnable={false} /* Disable animation */
+                  isAnimationActive={false} /* Correct prop to disable animation */
                   onClick={(data) => {
                     if (data && data.id) {
                       const category = spendingCategories.find(cat => cat.id === data.id);
