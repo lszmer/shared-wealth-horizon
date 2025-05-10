@@ -7,6 +7,9 @@ import { TabBar } from "@/components/tab-bar";
 import { Briefcase } from "lucide-react";
 
 export default function Portfolio() {
+  // Filter out the loans category
+  const filteredCategories = categoryTiles.filter(category => category.id !== "loans");
+  
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <DashboardHeader />
@@ -22,7 +25,7 @@ export default function Portfolio() {
         <NetWorthSummary />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {categoryTiles.map((category) => (
+          {filteredCategories.map((category) => (
             <CategoryTile key={category.id} category={category} />
           ))}
         </div>

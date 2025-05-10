@@ -1,4 +1,3 @@
-
 import { Account, CategoryTile, Property, Investment, Vehicle, Insurance, Valuable, Liability, Transaction } from "../types/portfolio";
 
 export const accounts: Account[] = [
@@ -48,7 +47,7 @@ export const categoryTiles: CategoryTile[] = [
     id: "insurance",
     title: "Insurance",
     path: "/insurance",
-    value: 75000,
+    value: 0, // Changed from 75000 to 0 as insurance is not an asset
     icon: "shield",
     color: "bg-amber-500",
   },
@@ -60,16 +59,7 @@ export const categoryTiles: CategoryTile[] = [
     icon: "diamond",
     color: "bg-rose-500",
   },
-  {
-    id: "loans",
-    title: "Loans & Credit",
-    path: "/loans",
-    // Fixed: Added the required value property with 0 since this is only liabilities
-    value: 0,
-    liability: 15300,
-    icon: "credit-card",
-    color: "bg-red-500",
-  },
+  // Removed the loans category
 ];
 
 export const properties: Property[] = [
@@ -273,10 +263,10 @@ export const calculateTotalAssets = () => {
   const homeValue = properties.reduce((sum, prop) => sum + prop.value, 0);
   const investmentValue = investments.reduce((sum, inv) => sum + inv.value, 0);
   const vehicleValue = vehicles.reduce((sum, veh) => sum + veh.value, 0);
-  const insuranceValue = insurances.reduce((sum, ins) => sum + (ins.cashValue || 0), 0);
+  // Removed insurance cash value from assets
   const valuableValue = valuables.reduce((sum, val) => sum + val.value, 0);
   
-  return homeValue + investmentValue + vehicleValue + insuranceValue + valuableValue;
+  return homeValue + investmentValue + vehicleValue + valuableValue;
 };
 
 // Helper function to calculate total liabilities
@@ -294,4 +284,33 @@ export const calculateTotalLiabilities = () => {
 // Helper function to calculate net worth
 export const calculateNetWorth = () => {
   return calculateTotalAssets() - calculateTotalLiabilities();
+};
+
+// New function to get net values by category for the pie chart
+export const getNetValuesByCategory = () => {
+  // Home net value
+  const homeValue = properties.reduce((sum, prop) => sum + prop.value, 0);
+  const mortgages = properties.flatMap(prop => prop.mortgages)
+    .reduce((sum, mortgage) => sum + mortgage.currentBalance, 0);
+  const homeNetValue = homeValue - mortgages;
+  
+  // Investments net value (no liabilities)
+  const investmentsNetValue = investments.reduce((sum, inv) => sum + inv.value, 0);
+  
+  // Vehicles net value
+  const vehicleValue = vehicles.reduce((sum, veh) => sum + veh.value, 0);
+  const carLoans = vehicles
+    .filter(veh => veh.loan)
+    .reduce((sum, veh) => sum + (veh.loan?.currentBalance || 0), 0);
+  const vehiclesNetValue = vehicleValue - carLoans;
+  
+  // Valuables net value (no liabilities)
+  const valuablesNetValue = valuables.reduce((sum, val) => sum + val.value, 0);
+  
+  return [
+    { id: "home", name: "Home", value: homeNetValue },
+    { id: "investments", name: "Investments", value: investmentsNetValue },
+    { id: "vehicles", name: "Vehicles", value: vehiclesNetValue },
+    { id: "valuables", name: "Valuables", value: valuablesNetValue },
+  ];
 };

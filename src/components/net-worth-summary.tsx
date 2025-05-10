@@ -1,5 +1,10 @@
 
-import { calculateNetWorth, calculateTotalAssets, calculateTotalLiabilities } from "@/data/mockData";
+import { 
+  calculateNetWorth, 
+  calculateTotalAssets, 
+  calculateTotalLiabilities, 
+  getNetValuesByCategory 
+} from "@/data/mockData";
 import { formatCurrency } from "@/lib/formatters";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
@@ -10,12 +15,16 @@ export function NetWorthSummary() {
   const liabilities = calculateTotalLiabilities();
   const netWorth = calculateNetWorth();
   
-  const data = [
-    { name: "Assets", value: assets },
-    { name: "Liabilities", value: liabilities },
-  ];
+  // Get net values by category for the pie chart
+  const netValuesByCategory = getNetValuesByCategory();
   
-  const COLORS = ["#9b87f5", "#ef4444"];
+  // Colors for different categories
+  const CATEGORY_COLORS = {
+    home: "#4299e1", // blue
+    investments: "#9b87f5", // purple
+    vehicles: "#48bb78", // green
+    valuables: "#f687b3", // pink
+  };
   
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 relative overflow-hidden">
@@ -48,14 +57,16 @@ export function NetWorthSummary() {
       <div className="h-40 relative">
         <ChartContainer
           config={{
-            assets: { color: "#9b87f5" },
-            liabilities: { color: "#ef4444" },
+            home: { color: CATEGORY_COLORS.home, label: "Home" },
+            investments: { color: CATEGORY_COLORS.investments, label: "Investments" },
+            vehicles: { color: CATEGORY_COLORS.vehicles, label: "Vehicles" },
+            valuables: { color: CATEGORY_COLORS.valuables, label: "Valuables" },
           }}
         >
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={data}
+                data={netValuesByCategory}
                 cx="50%"
                 cy="50%"
                 innerRadius={40}
@@ -67,12 +78,15 @@ export function NetWorthSummary() {
                 strokeWidth={2}
                 stroke="#fff"
               >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                {netValuesByCategory.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={CATEGORY_COLORS[entry.id as keyof typeof CATEGORY_COLORS]} 
+                  />
                 ))}
               </Pie>
               <ChartTooltip
-                content={<ChartTooltipContent />}
+                content={<ChartTooltipContent labelKey="name" />}
               />
             </PieChart>
           </ResponsiveContainer>
