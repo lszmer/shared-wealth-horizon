@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PiggyBank, Support, Bell, Phone } from "lucide-react";
+import { PiggyBank, HeartHandshake, Bell, Phone } from "lucide-react";
 
 export function ElderHub() {
   const [activeTab, setActiveTab] = useState("wallet");
@@ -42,7 +42,7 @@ export function ElderHub() {
             className="flex flex-col items-center justify-center text-base data-[state=active]:text-[#10B981]"
             style={{ minHeight: '44px' }}
           >
-            <Support className="h-5 w-5" />
+            <HeartHandshake className="h-5 w-5" />
             <span className="mt-1">Support</span>
           </TabsTrigger>
         </TabsList>

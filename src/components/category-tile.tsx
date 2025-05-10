@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { CategoryTile as CategoryTileType } from "@/types/portfolio";
 import { Circle, Home, PiggyBank, Car, Shield, Gem, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PercentageChange } from "@/components/ui/percentage-change";
 import { formatCurrency } from "@/lib/formatters";
 
 interface CategoryTileProps {
@@ -13,7 +12,6 @@ interface CategoryTileProps {
 export function CategoryTile({ category }: CategoryTileProps) {
   const { title, value, liability, icon, color, path } = category;
   const netValue = (value || 0) - (liability || 0);
-  const percentChange = netValue !== 0 ? ((value || 0) / (netValue || 1) - 1) * 100 : 0;
   
   // Map icon string to the actual Lucide icon component
   const getIcon = () => {
@@ -39,11 +37,11 @@ export function CategoryTile({ category }: CategoryTileProps) {
   const getBgImage = () => {
     switch (icon) {
       case "home":
-        return "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
+        return "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3"; // House image
       case "piggy-bank":
         return "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
       case "car":
-        return "https://images.unsplash.com/photo-1494891848038-7bd202a2afeb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
+        return "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3"; // Car image
       case "shield":
         return "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
       case "diamond":
@@ -103,16 +101,6 @@ export function CategoryTile({ category }: CategoryTileProps) {
             </div>
           )}
         </div>
-        
-        {percentChange !== 0 && (
-          <div className="mt-2 relative z-10">
-            <PercentageChange 
-              value={percentChange} 
-              className="text-white" 
-              iconSize={14}
-            />
-          </div>
-        )}
       </div>
     </Link>
   );
