@@ -79,7 +79,7 @@ export function AiAssistant() {
 
   return (
     <div className={cn(
-      "fixed bottom-16 left-0 right-0 bg-white border-t border-gray-200 transition-all duration-300 ease-in-out z-20",
+      "fixed bottom-16 left-0 right-0 bg-gray-800/90 border-t border-gray-700 backdrop-blur-sm transition-all duration-300 ease-in-out z-20",
       isExpanded ? "h-80" : "h-12"
     )}>
       {/* Header bar */}
@@ -88,13 +88,13 @@ export function AiAssistant() {
         className="h-12 flex items-center justify-between px-4 cursor-pointer"
       >
         <div className="flex items-center">
-          <Bot size={20} className="text-finance-accent" />
-          <span className="ml-2 font-medium text-finance-dark">AI Financial Assistant</span>
+          <Bot size={20} className="text-pink-500" />
+          <span className="ml-2 font-medium text-white">AI Financial Assistant</span>
         </div>
         <div>
           {isExpanded ? 
-            <ChevronDown size={20} className="text-gray-500" /> : 
-            <ChevronUp size={20} className="text-gray-500" />
+            <ChevronDown size={20} className="text-gray-400" /> : 
+            <ChevronUp size={20} className="text-gray-400" />
           }
         </div>
       </div>
@@ -110,11 +110,13 @@ export function AiAssistant() {
                 className={cn(
                   "mb-2 p-2 rounded-lg max-w-[85%]", 
                   message.sender === "user" 
-                    ? "bg-purple-100 ml-auto" 
-                    : "bg-gray-100"
+                    ? "bg-gray-700 ml-auto" 
+                    : "bg-pink-500/20 border border-pink-500/30"
                 )}
               >
-                {message.text}
+                <span className={message.sender === "user" ? "text-white" : "text-white"}>
+                  {message.text}
+                </span>
               </div>
             ))}
           </div>
@@ -126,14 +128,14 @@ export function AiAssistant() {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Ask about your finances..."
-              className="flex-1 border border-gray-300 rounded-l-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-finance-accent"
+              className="flex-1 border border-gray-700 bg-gray-900/50 text-white placeholder-gray-400 rounded-l-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-pink-500"
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSendMessage();
               }}
             />
             <Button 
               onClick={handleSendMessage}
-              className="bg-finance-accent hover:bg-finance-accent/80 text-white rounded-l-none"
+              className="bg-pink-500 hover:bg-pink-600 text-white rounded-l-none"
             >
               Send
             </Button>
