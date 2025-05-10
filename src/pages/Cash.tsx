@@ -112,7 +112,7 @@ const CustomSankeyLink = (props: any) => {
 
 // Custom Tooltip for the Sankey diagram
 const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
+  if (active && payload && payload.length > 0 && payload[0]?.payload?.source && payload[0]?.payload?.target) {
     return (
       <div className="bg-gray-800 p-2 border border-gray-700 rounded-md text-xs">
         <p className="text-white font-medium">{`${payload[0].payload.source.name} → ${payload[0].payload.target.name}`}</p>
