@@ -11,7 +11,7 @@ import {
   formattedTotalSpending,
   SpendingCategory
 } from "@/data/spendingData";
-import { Tree, TreeNode } from "recharts";
+import { Treemap, ResponsiveContainer } from "recharts";
 import { ChartContainer } from "@/components/ui/chart";
 
 export default function Cash() {
@@ -38,7 +38,7 @@ export default function Cash() {
     });
   };
 
-  // Create tree data structure from spending categories
+  // Create treemap data structure from spending categories
   const treeData = {
     name: "Monthly Spending",
     children: spendingCategories.map(category => ({
@@ -47,6 +47,52 @@ export default function Cash() {
       id: category.id,
       category: category
     }))
+  };
+
+  // Custom render for treemap content
+  const CustomizedContent = (props: any) => {
+    const { x, y, width, height, name, size, id } = props;
+    
+    if (!width || !height) return null;
+    
+    return (
+      <g>
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          style={{
+            fill: spendingCategories.find(c => c.id === id)?.color || '#8884d8',
+            stroke: '#fff',
+            strokeWidth: 2,
+            fillOpacity: 0.9,
+          }}
+        />
+        <text
+          x={x + width / 2}
+          y={y + height / 2 - 8}
+          textAnchor="middle"
+          fill="#fff"
+          fontSize={16}
+          fontWeight="bold"
+        >
+          {name}
+        </text>
+        <text
+          x={x + width / 2}
+          y={y + height / 2 + 10}
+          textAnchor="middle"
+          fill="#fff"
+          fontSize={14}
+        >
+          {size.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD'
+          })}
+        </text>
+      </g>
+    );
   };
   
   return (
@@ -78,19 +124,14 @@ export default function Cash() {
               }}
               className="h-full w-full"
             >
-              <Tree
-                width={800}
-                height={500}
-                data={treeData}
-                dataKey="size"
-                nameKey="name"
-                isAnimationActive={true}
-                style={{ fontSize: 18 }}
-              >
-                <TreeNode 
-                  fill="#9b87f5" 
-                  stroke="#8E9196"
-                  strokeWidth={1}
+              <ResponsiveContainer width="100%" height="100%">
+                <Treemap
+                  data={[treeData]}
+                  dataKey="size"
+                  ratio={4/3}
+                  stroke="#fff"
+                  fill="#8884d8"
+                  content={<CustomizedContent />}
                   onClick={(data) => {
                     if (data && data.id) {
                       const category = spendingCategories.find(cat => cat.id === data.id);
@@ -99,8 +140,9 @@ export default function Cash() {
                       }
                     }
                   }}
-                />
-              </Tree>
+                >
+                </Treemap>
+              </ResponsiveContainer>
             </ChartContainer>
           </div>
         </div>
