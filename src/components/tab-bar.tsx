@@ -16,7 +16,7 @@ export function TabBar({ currentTab = "home" }: TabBarProps) {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 px-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 px-4 z-10">
       {tabs.map((tab) => {
         const isActive = currentTab === tab.id;
         const IconComponent = tab.icon;
