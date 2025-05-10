@@ -62,6 +62,9 @@ export default function Cash() {
         currency: 'USD'
       }) : '$0.00';
     
+    // Determine if this is the savings category to highlight it
+    const isSavings = id === "savings";
+    
     return (
       <g>
         <rect
@@ -70,7 +73,7 @@ export default function Cash() {
           width={width}
           height={height}
           style={{
-            fill: spendingCategories.find(c => c.id === id)?.color || '#8884d8',
+            fill: isSavings ? '#EC4899' : '#222222', // Dark grey boxes, pink for savings
             stroke: '#fff',
             strokeWidth: 2,
             fillOpacity: 0.9,
@@ -100,7 +103,7 @@ export default function Cash() {
   };
   
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-gray-800"> {/* Match footer bar color */}
       <div className="p-4 space-y-4 flex flex-col h-[calc(100vh-80px)]">
         <div className="flex items-center justify-end mb-2">
           <div className="text-right">
@@ -110,21 +113,21 @@ export default function Cash() {
         </div>
         
         <div className="flex-grow overflow-hidden">
-          <div className="p-3 border-b border-gray-800">
+          <div className="p-3 border-b border-gray-700">
             <h2 className="text-lg font-medium text-white">Monthly Spending</h2>
           </div>
           
           <div className="h-full w-full">
             <ChartContainer 
               config={{ 
-                spending: { theme: { dark: "#9b87f5", light: "#9b87f5" } },
-                food: { theme: { dark: "#F97316", light: "#F97316" } },
-                housing: { theme: { dark: "#0EA5E9", light: "#0EA5E9" } },
-                savings: { theme: { dark: "#8B5CF6", light: "#8B5CF6" } },
-                other: { theme: { dark: "#D946EF", light: "#D946EF" } },
-                mobility: { theme: { dark: "#F2FCE2", light: "#F2FCE2" } },
-                entertainment: { theme: { dark: "#FEF7CD", light: "#FEF7CD" } },
-                insurance: { theme: { dark: "#33C3F0", light: "#33C3F0" } }
+                spending: { theme: { dark: "#222222", light: "#222222" } },
+                food: { theme: { dark: "#222222", light: "#222222" } },
+                housing: { theme: { dark: "#222222", light: "#222222" } },
+                savings: { theme: { dark: "#EC4899", light: "#EC4899" } },
+                other: { theme: { dark: "#222222", light: "#222222" } },
+                mobility: { theme: { dark: "#222222", light: "#222222" } },
+                entertainment: { theme: { dark: "#222222", light: "#222222" } },
+                insurance: { theme: { dark: "#222222", light: "#222222" } }
               }}
               className="h-full w-full"
             >
@@ -132,10 +135,10 @@ export default function Cash() {
                 <Treemap
                   data={[treeData]}
                   dataKey="size"
-                  // Removed the invalid 'ratio' prop
                   stroke="#fff"
-                  fill="#8884d8"
+                  fill="#222222"
                   content={<CustomizedContent />}
+                  animationEnable={false} /* Disable animation */
                   onClick={(data) => {
                     if (data && data.id) {
                       const category = spendingCategories.find(cat => cat.id === data.id);
