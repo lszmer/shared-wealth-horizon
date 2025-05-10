@@ -1,7 +1,7 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTileVisibility } from "@/context/TileVisibilityContext";
-import { Plus, Minus, Home, PiggyBank, Car, Shield, Gem } from "lucide-react";
+import { Plus, Minus, Home, PiggyBank, Car, Shield, Gem, Sofa } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TileEditorDialogProps {
@@ -25,6 +25,8 @@ export function TileEditorDialog({ open, onOpenChange }: TileEditorDialogProps) 
         return <Shield size={20} />;
       case "diamond":
         return <Gem size={20} />;
+      case "sofa":
+        return <Sofa size={20} />;
       default:
         return null;
     }

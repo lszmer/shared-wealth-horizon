@@ -59,6 +59,14 @@ export const categoryTiles: CategoryTile[] = [
     icon: "diamond",
     color: "bg-rose-500",
   },
+  {
+    id: "furniture",
+    title: "Furniture",
+    path: "/furniture",
+    value: 15000,
+    icon: "sofa",
+    color: "bg-indigo-500",
+  },
   // Removed the loans category
 ];
 
@@ -265,8 +273,9 @@ export const calculateTotalAssets = () => {
   const vehicleValue = vehicles.reduce((sum, veh) => sum + veh.value, 0);
   // Removed insurance cash value from assets
   const valuableValue = valuables.reduce((sum, val) => sum + val.value, 0);
+  const furnitureValue = 15000; // Adding furniture value to total assets
   
-  return homeValue + investmentValue + vehicleValue + valuableValue;
+  return homeValue + investmentValue + vehicleValue + valuableValue + furnitureValue;
 };
 
 // Helper function to calculate total liabilities
@@ -306,11 +315,15 @@ export const getNetValuesByCategory = () => {
   
   // Valuables net value (no liabilities)
   const valuablesNetValue = valuables.reduce((sum, val) => sum + val.value, 0);
+
+  // Furniture net value (no liabilities)
+  const furnitureNetValue = 15000;
   
   return [
     { id: "home", name: "Home", value: homeNetValue },
     { id: "investments", name: "Investments", value: investmentsNetValue },
     { id: "vehicles", name: "Vehicles", value: vehiclesNetValue },
     { id: "valuables", name: "Valuables", value: valuablesNetValue },
+    { id: "furniture", name: "Furniture", value: furnitureNetValue },
   ];
 };

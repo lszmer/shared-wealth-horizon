@@ -1,7 +1,6 @@
-
 import { Link } from "react-router-dom";
 import { CategoryTile as CategoryTileType } from "@/types/portfolio";
-import { Circle, Home, PiggyBank, Car, Shield, Gem, CreditCard } from "lucide-react";
+import { Circle, Home, PiggyBank, Car, Shield, Gem, CreditCard, Sofa } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/formatters";
 
@@ -28,6 +27,8 @@ export function CategoryTile({ category }: CategoryTileProps) {
         return <Gem size={28} className="text-white" />;
       case "credit-card":
         return <CreditCard size={28} className="text-white" />;
+      case "sofa":
+        return <Sofa size={28} className="text-white" />;
       default:
         return <Circle size={28} className="text-white" />;
     }
@@ -46,6 +47,8 @@ export function CategoryTile({ category }: CategoryTileProps) {
         return "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
       case "diamond":
         return "https://images.unsplash.com/photo-1460574283810-2aab119d8511?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
+      case "sofa":
+        return "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3"; // Sofa/furniture image
       default:
         return "";
     }
