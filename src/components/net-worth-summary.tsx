@@ -47,42 +47,33 @@ export function NetWorthSummary() {
       </div>
       
       <div className="h-40 relative">
-        <ChartContainer
-          config={{
-            home: { color: CATEGORY_COLORS.home, label: "Home" },
-            investments: { color: CATEGORY_COLORS.investments, label: "Investments" },
-            vehicles: { color: CATEGORY_COLORS.vehicles, label: "Vehicles" },
-            valuables: { color: CATEGORY_COLORS.valuables, label: "Valuables" },
-          }}
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={netValuesByCategory}
-                cx="50%"
-                cy="50%"
-                innerRadius={40}
-                outerRadius={70}
-                paddingAngle={2}
-                dataKey="value"
-                nameKey="name"
-                label={false}
-                strokeWidth={2}
-                stroke="#fff"
-              >
-                {netValuesByCategory.map((entry, index) => (
-                  <Cell 
-                    key={`cell-${index}`} 
-                    fill={CATEGORY_COLORS[entry.id as keyof typeof CATEGORY_COLORS]} 
-                  />
-                ))}
-              </Pie>
-              <ChartTooltip
-                content={<ChartTooltipContent labelKey="name" />}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </ChartContainer>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={netValuesByCategory}
+              cx="50%"
+              cy="50%"
+              innerRadius={40}
+              outerRadius={70}
+              paddingAngle={2}
+              dataKey="value"
+              nameKey="name"
+              label={false}
+              strokeWidth={2}
+              stroke="#fff"
+            >
+              {netValuesByCategory.map((entry, index) => (
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={CATEGORY_COLORS[entry.id as keyof typeof CATEGORY_COLORS]} 
+                />
+              ))}
+            </Pie>
+            <ChartTooltip
+              content={<ChartTooltipContent labelKey="name" />}
+            />
+          </PieChart>
+        </ResponsiveContainer>
         
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div className="text-sm text-gray-500">Net</div>

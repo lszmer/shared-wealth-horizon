@@ -14,6 +14,7 @@ import Insurance from "./pages/categories/Insurance";
 import Valuables from "./pages/categories/Valuables";
 import Loans from "./pages/categories/Loans";
 import FamilyAccountManagement from "./pages/FamilyAccountManagement";
+import { AiAssistant } from "./components/ai-assistant";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/family" element={<FamilyAccountManagement />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <AiAssistant />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
