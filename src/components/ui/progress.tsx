@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   indicatorClassName?: string;
-  direction?: "left-to-right" | "right-to-left" | "bottom-to-top";
+  direction?: "left-to-right" | "right-to-left";
 }
 
 const Progress = React.forwardRef<
@@ -29,8 +29,6 @@ const Progress = React.forwardRef<
       style={{ 
         transform: direction === "right-to-left" 
           ? `translateX(-${100 - (value || 0)}%)` 
-          : direction === "bottom-to-top"
-          ? `translateY(${100 - (value || 0)}%)`
           : `translateX(-${100 - (value || 0)}%)`
       }}
     />

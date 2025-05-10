@@ -46,17 +46,14 @@ export function SpendingTile({ category, onClick }: SpendingTileProps) {
   return (
     <div 
       className={`p-3 cursor-pointer border-r border-b border-gray-100 transition-all hover:bg-white relative overflow-hidden ${colors.bg}`}
-      style={{ 
-        flexGrow: category.percentage,
-        position: 'relative'
-      }} 
+      style={{ flexGrow: category.percentage }} 
       onClick={onClick}
     >
-      {/* Progress fill - absolutely positioned to fill from bottom */}
+      {/* Progress fill - absolutely positioned to fill from left */}
       {budget > 0 && (
         <div 
-          className={`absolute left-0 bottom-0 right-0 ${colors.fill} opacity-40 z-0`}
-          style={{ height: `${Math.min(percentOfBudget, 100)}%` }}
+          className={`absolute left-0 top-0 bottom-0 h-full ${colors.fill} opacity-40 z-0`}
+          style={{ width: `${Math.min(percentOfBudget, 100)}%` }}
         />
       )}
       
