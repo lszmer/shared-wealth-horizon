@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { categoryTiles } from "@/data/mockData";
 import { CategoryTile } from "@/types/portfolio";
 
@@ -21,7 +21,16 @@ export const useTileVisibility = () => {
 };
 
 export const TileVisibilityProvider = ({ children }: { children: ReactNode }) => {
-  const [visibleTileIds, setVisibleTileIds] = useState<string[]>([]);
+  // Initialize state from localStorage or empty array if nothing saved
+  const [visibleTileIds, setVisibleTileIds] = useState<string[]>(() => {
+    const savedTileIds = localStorage.getItem('visibleTileIds');
+    return savedTileIds ? JSON.parse(savedTileIds) : [];
+  });
+  
+  // Save to localStorage whenever visibleTileIds changes
+  useEffect(() => {
+    localStorage.setItem('visibleTileIds', JSON.stringify(visibleTileIds));
+  }, [visibleTileIds]);
   
   // Filter category tiles based on visibility state
   const visibleTiles = categoryTiles.filter(tile => visibleTileIds.includes(tile.id));

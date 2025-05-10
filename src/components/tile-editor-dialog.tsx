@@ -48,7 +48,9 @@ export function TileEditorDialog({ open, onOpenChange }: TileEditorDialogProps) 
             {availableTiles.map((tile) => (
               <div 
                 key={tile.id}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                className={`flex items-center justify-between p-3 rounded-lg ${
+                  isTileVisible(tile.id) ? `bg-${tile.color.split('-')[1]}-100` : "bg-gray-50"
+                }`}
               >
                 <div className="flex items-center">
                   <div className={`p-2 rounded-md mr-3 ${tile.color}`}>

@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { CategoryTile } from "@/components/category-tile";
-import { NetWorthSummary } from "@/components/net-worth-summary";
 import { TabBar } from "@/components/tab-bar";
 import { Briefcase, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -37,8 +36,6 @@ function PortfolioContent() {
             Edit Tiles
           </Button>
         </div>
-        
-        <NetWorthSummary />
         
         {visibleTiles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
