@@ -5,13 +5,13 @@ import { cn } from "@/lib/utils";
 
 interface TabBarProps {
   currentTab?: string;
-  showAccountSwitcher?: boolean; // Added this prop
+  showAccountSwitcher?: boolean;
 }
 
 export function TabBar({ currentTab = "home", showAccountSwitcher = false }: TabBarProps) {
   const tabs = [
     { id: "home", icon: Home, label: "Cash", path: "/" },
-    { id: "portfolio", icon: LayoutGrid, label: "Portfolio", path: "/portfolio" },
+    { id: "portfolio", icon: LayoutGrid, label: "Wealth", path: "/portfolio" },
   ];
 
   return (

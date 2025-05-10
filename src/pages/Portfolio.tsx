@@ -20,7 +20,7 @@ function PortfolioContent() {
             <div className="bg-pink-500 p-1.5 rounded-md">
               <Briefcase size={22} className="text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-white">Portfolio</h1>
+            <h1 className="text-2xl font-bold text-white">Wealth</h1>
           </div>
           
           <Button

@@ -1,7 +1,5 @@
-
 import { useState } from "react";
 import { TabBar } from "@/components/tab-bar";
-import { toast } from "@/components/ui/use-toast";
 import { 
   spendingCategories, 
   transactions, 
@@ -20,15 +18,6 @@ export default function Cash() {
   const handleCategoryClick = (category: SpendingCategory) => {
     setSelectedCategory(category);
     setIsPopupOpen(true);
-    
-    toast({
-      title: `${category.name} selected`,
-      description: `You've selected the ${category.name} category with ${category.amount.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      })}`,
-      duration: 3000,
-    });
   };
 
   // Create treemap data structure from spending categories
@@ -96,7 +85,7 @@ export default function Cash() {
   };
   
   return (
-    <div className="min-h-screen bg-gray-800"> {/* Match footer bar color */}
+    <div className="min-h-screen bg-gray-800">
       <div className="p-4 space-y-4 flex flex-col h-[calc(100vh-80px)]">
         <div className="flex items-center justify-end mb-2">
           <div className="text-right">
@@ -131,7 +120,7 @@ export default function Cash() {
                   stroke="#fff"
                   fill="#222222"
                   content={<CustomizedContent />}
-                  isAnimationActive={false} /* Correct prop to disable animation */
+                  isAnimationActive={false}
                   onClick={(data) => {
                     if (data && data.id) {
                       const category = spendingCategories.find(cat => cat.id === data.id);
@@ -150,7 +139,6 @@ export default function Cash() {
       
       <TabBar currentTab="home" />
       
-      {/* New fullscreen popup replacing both previous popups */}
       <FullScreenPopup
         open={isPopupOpen}
         onOpenChange={setIsPopupOpen}

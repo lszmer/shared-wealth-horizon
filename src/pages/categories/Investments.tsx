@@ -1,17 +1,20 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { TabBar } from "@/components/tab-bar";
 import { investments } from "@/data/mockData";
 import { formatCurrency } from "@/lib/formatters";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PiggyBank, Landmark, GraduationCap, TrendingUp } from "lucide-react";
+import { PiggyBank, Landmark, GraduationCap, TrendingUp, ArrowLeft } from "lucide-react";
 import { PercentageChange } from "@/components/ui/percentage-change";
 import { Investment } from "@/types/portfolio";
 import { PortfolioChart, generateChartData } from "@/components/ui/portfolio-chart";
 import { TimeFilter } from "@/components/ui/time-filter";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Investments() {
   const [timeframe, setTimeframe] = useState("1M");
+  const [activeTab, setActiveTab] = useState("all");
   
   // Group investments by type
   const stockInvestments = investments.filter(inv => inv.type === 'stock');
@@ -37,15 +40,23 @@ export default function Investments() {
   
   return (
     <div className="min-h-screen bg-gray-900 pb-20">      
-      <div className="p-4 space-y-6">
-        <div className="flex items-center space-x-2">
-          <PiggyBank className="text-purple-500" size={24} />
-          <h1 className="text-2xl font-bold text-white">Savings & Investments</h1>
+      <div className="p-4 space-y-5">
+        <div className="flex items-center">
+          <Link 
+            to="/portfolio" 
+            className="mr-3 p-1.5 rounded-full bg-gray-800 hover:bg-gray-700"
+          >
+            <ArrowLeft className="text-white" size={18} />
+          </Link>
+          <div className="flex items-center space-x-2">
+            <PiggyBank className="text-purple-500" size={24} />
+            <h1 className="text-2xl font-bold text-white">Savings & Investments</h1>
+          </div>
         </div>
         
         <Card className="border-purple-800 bg-gray-800/50 text-white">
           <CardContent className="pt-6 pb-4">
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-3">
               <div className="flex justify-between items-center">
                 <div>
                   <div className="text-sm text-gray-400">Total Value</div>
@@ -57,8 +68,8 @@ export default function Investments() {
                 </div>
               </div>
               
-              <div className="h-40 -mx-2">
-                <PortfolioChart data={summaryChartData} color="#9b87f5" height={160} />
+              <div className="h-24 -mx-2">
+                <PortfolioChart data={summaryChartData} color="#9b87f5" height={96} />
               </div>
               
               <div className="w-full px-2">
@@ -72,158 +83,331 @@ export default function Investments() {
           </CardContent>
         </Card>
         
-        <Card className="bg-gray-800/50 border-gray-700 text-white">
-          <CardHeader className="pb-2">
-            <div className="flex items-center space-x-2">
-              <PiggyBank size={18} />
-              <CardTitle>Stocks</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between mb-4">
-              <div className="text-sm text-gray-400">Total Value</div>
-              <div className="font-medium">{formatCurrency(stockTotal)}</div>
-            </div>
-            
-            <div className="space-y-3">
-              {stockInvestments.map(investment => (
-                <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
-                  <div className="flex items-center flex-1">
-                    {investment.logo ? (
-                      <img src={investment.logo} alt={investment.name} className="w-8 h-8 mr-3 rounded-full" />
-                    ) : (
-                      <div className="w-8 h-8 bg-gray-700 rounded-full mr-3 flex items-center justify-center text-xs">
-                        {investment.name.charAt(0)}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full bg-gray-800 mb-4">
+            <TabsTrigger value="all" className="flex-1">All</TabsTrigger>
+            <TabsTrigger value="stocks" className="flex-1">Stocks</TabsTrigger>
+            <TabsTrigger value="savings" className="flex-1">Savings</TabsTrigger>
+            <TabsTrigger value="retirement" className="flex-1">Retirement</TabsTrigger>
+            <TabsTrigger value="children" className="flex-1">Children</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="all" className="space-y-4 mt-0">
+            <Card className="bg-gray-800/50 border-gray-700 text-white">
+              <CardHeader className="pb-2">
+                <div className="flex items-center space-x-2">
+                  <PiggyBank size={18} />
+                  <CardTitle>Stocks</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between mb-4">
+                  <div className="text-sm text-gray-400">Total Value</div>
+                  <div className="font-medium">{formatCurrency(stockTotal)}</div>
+                </div>
+                
+                <div className="space-y-3">
+                  {stockInvestments.map(investment => (
+                    <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
+                      <div className="flex items-center flex-1">
+                        {investment.logo ? (
+                          <img src={investment.logo} alt={investment.name} className="w-8 h-8 mr-3 rounded-full" />
+                        ) : (
+                          <div className="w-8 h-8 bg-gray-700 rounded-full mr-3 flex items-center justify-center text-xs">
+                            {investment.name.charAt(0)}
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-medium">{investment.name}</div>
+                          <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
+                        </div>
                       </div>
-                    )}
-                    <div>
-                      <div className="font-medium">{investment.name}</div>
-                      <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <div className="w-24 h-12">
+                          <PortfolioChart 
+                            data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                            color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                            height={48} 
+                          />
+                        </div>
+                        <PercentageChange value={investment.percentageChange} iconSize={14} />
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3 ml-2">
-                    <div className="w-24 h-12">
-                      <PortfolioChart 
-                        data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
-                        color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
-                        height={48} 
-                      />
-                    </div>
-                    <PercentageChange value={investment.percentageChange} iconSize={14} />
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-gray-800/50 border-gray-700 text-white">
-          <CardHeader className="pb-2">
-            <div className="flex items-center space-x-2">
-              <Landmark size={18} />
-              <CardTitle>Liquid Savings</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between mb-4">
-              <div className="text-sm text-gray-400">Total Value</div>
-              <div className="font-medium">{formatCurrency(savingsTotal)}</div>
-            </div>
+              </CardContent>
+            </Card>
             
-            <div className="space-y-3">
-              {savingsInvestments.map(investment => (
-                <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
-                  <div className="flex-1">
-                    <div className="font-medium">{investment.name}</div>
-                    <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
-                  </div>
-                  <div className="flex items-center gap-3 ml-2">
-                    <div className="w-24 h-12">
-                      <PortfolioChart 
-                        data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
-                        color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
-                        height={48} 
-                      />
-                    </div>
-                    <PercentageChange value={investment.percentageChange} iconSize={14} />
-                  </div>
+            <Card className="bg-gray-800/50 border-gray-700 text-white">
+              <CardHeader className="pb-2">
+                <div className="flex items-center space-x-2">
+                  <Landmark size={18} />
+                  <CardTitle>Liquid Savings</CardTitle>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-gray-800/50 border-gray-700 text-white">
-          <CardHeader className="pb-2">
-            <div className="flex items-center space-x-2">
-              <Landmark size={18} />
-              <CardTitle>Retirement</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between mb-4">
-              <div className="text-sm text-gray-400">Total Value</div>
-              <div className="font-medium">{formatCurrency(retirementTotal)}</div>
-            </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between mb-4">
+                  <div className="text-sm text-gray-400">Total Value</div>
+                  <div className="font-medium">{formatCurrency(savingsTotal)}</div>
+                </div>
+                
+                <div className="space-y-3">
+                  {savingsInvestments.map(investment => (
+                    <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
+                      <div className="flex-1">
+                        <div className="font-medium">{investment.name}</div>
+                        <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
+                      </div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <div className="w-24 h-12">
+                          <PortfolioChart 
+                            data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                            color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                            height={48} 
+                          />
+                        </div>
+                        <PercentageChange value={investment.percentageChange} iconSize={14} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
             
-            <div className="space-y-3">
-              {retirementInvestments.map(investment => (
-                <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
-                  <div className="flex-1">
-                    <div className="font-medium">{investment.name}</div>
-                    <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
-                  </div>
-                  <div className="flex items-center gap-3 ml-2">
-                    <div className="w-24 h-12">
-                      <PortfolioChart 
-                        data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
-                        color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
-                        height={48} 
-                      />
-                    </div>
-                    <PercentageChange value={investment.percentageChange} iconSize={14} />
-                  </div>
+            <Card className="bg-gray-800/50 border-gray-700 text-white">
+              <CardHeader className="pb-2">
+                <div className="flex items-center space-x-2">
+                  <Landmark size={18} />
+                  <CardTitle>Retirement</CardTitle>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-gray-800/50 border-gray-700 text-white">
-          <CardHeader className="pb-2">
-            <div className="flex items-center space-x-2">
-              <GraduationCap size={18} />
-              <CardTitle>Children's Savings</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between mb-4">
-              <div className="text-sm text-gray-400">Total Value</div>
-              <div className="font-medium">{formatCurrency(childrenTotal)}</div>
-            </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between mb-4">
+                  <div className="text-sm text-gray-400">Total Value</div>
+                  <div className="font-medium">{formatCurrency(retirementTotal)}</div>
+                </div>
+                
+                <div className="space-y-3">
+                  {retirementInvestments.map(investment => (
+                    <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
+                      <div className="flex-1">
+                        <div className="font-medium">{investment.name}</div>
+                        <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
+                      </div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <div className="w-24 h-12">
+                          <PortfolioChart 
+                            data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                            color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                            height={48} 
+                          />
+                        </div>
+                        <PercentageChange value={investment.percentageChange} iconSize={14} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
             
-            <div className="space-y-3">
-              {childrenInvestments.map(investment => (
-                <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
-                  <div className="flex-1">
-                    <div className="font-medium">{investment.name}</div>
-                    <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
-                  </div>
-                  <div className="flex items-center gap-3 ml-2">
-                    <div className="w-24 h-12">
-                      <PortfolioChart 
-                        data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
-                        color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
-                        height={48} 
-                      />
-                    </div>
-                    <PercentageChange value={investment.percentageChange} iconSize={14} />
-                  </div>
+            <Card className="bg-gray-800/50 border-gray-700 text-white">
+              <CardHeader className="pb-2">
+                <div className="flex items-center space-x-2">
+                  <GraduationCap size={18} />
+                  <CardTitle>Children's Savings</CardTitle>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between mb-4">
+                  <div className="text-sm text-gray-400">Total Value</div>
+                  <div className="font-medium">{formatCurrency(childrenTotal)}</div>
+                </div>
+                
+                <div className="space-y-3">
+                  {childrenInvestments.map(investment => (
+                    <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
+                      <div className="flex-1">
+                        <div className="font-medium">{investment.name}</div>
+                        <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
+                      </div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <div className="w-24 h-12">
+                          <PortfolioChart 
+                            data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                            color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                            height={48} 
+                          />
+                        </div>
+                        <PercentageChange value={investment.percentageChange} iconSize={14} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="stocks" className="space-y-4 mt-0">
+            <Card className="bg-gray-800/50 border-gray-700 text-white">
+              <CardHeader className="pb-2">
+                <div className="flex items-center space-x-2">
+                  <PiggyBank size={18} />
+                  <CardTitle>Stocks</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between mb-4">
+                  <div className="text-sm text-gray-400">Total Value</div>
+                  <div className="font-medium">{formatCurrency(stockTotal)}</div>
+                </div>
+                
+                <div className="space-y-3">
+                  {stockInvestments.map(investment => (
+                    <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
+                      <div className="flex items-center flex-1">
+                        {investment.logo ? (
+                          <img src={investment.logo} alt={investment.name} className="w-8 h-8 mr-3 rounded-full" />
+                        ) : (
+                          <div className="w-8 h-8 bg-gray-700 rounded-full mr-3 flex items-center justify-center text-xs">
+                            {investment.name.charAt(0)}
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-medium">{investment.name}</div>
+                          <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <div className="w-24 h-12">
+                          <PortfolioChart 
+                            data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                            color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                            height={48} 
+                          />
+                        </div>
+                        <PercentageChange value={investment.percentageChange} iconSize={14} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="savings" className="space-y-4 mt-0">
+            <Card className="bg-gray-800/50 border-gray-700 text-white">
+              <CardHeader className="pb-2">
+                <div className="flex items-center space-x-2">
+                  <Landmark size={18} />
+                  <CardTitle>Liquid Savings</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between mb-4">
+                  <div className="text-sm text-gray-400">Total Value</div>
+                  <div className="font-medium">{formatCurrency(savingsTotal)}</div>
+                </div>
+                
+                <div className="space-y-3">
+                  {savingsInvestments.map(investment => (
+                    <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
+                      <div className="flex-1">
+                        <div className="font-medium">{investment.name}</div>
+                        <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
+                      </div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <div className="w-24 h-12">
+                          <PortfolioChart 
+                            data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                            color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                            height={48} 
+                          />
+                        </div>
+                        <PercentageChange value={investment.percentageChange} iconSize={14} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="retirement" className="space-y-4 mt-0">
+            <Card className="bg-gray-800/50 border-gray-700 text-white">
+              <CardHeader className="pb-2">
+                <div className="flex items-center space-x-2">
+                  <Landmark size={18} />
+                  <CardTitle>Retirement</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between mb-4">
+                  <div className="text-sm text-gray-400">Total Value</div>
+                  <div className="font-medium">{formatCurrency(retirementTotal)}</div>
+                </div>
+                
+                <div className="space-y-3">
+                  {retirementInvestments.map(investment => (
+                    <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
+                      <div className="flex-1">
+                        <div className="font-medium">{investment.name}</div>
+                        <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
+                      </div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <div className="w-24 h-12">
+                          <PortfolioChart 
+                            data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                            color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                            height={48} 
+                          />
+                        </div>
+                        <PercentageChange value={investment.percentageChange} iconSize={14} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="children" className="space-y-4 mt-0">
+            <Card className="bg-gray-800/50 border-gray-700 text-white">
+              <CardHeader className="pb-2">
+                <div className="flex items-center space-x-2">
+                  <GraduationCap size={18} />
+                  <CardTitle>Children's Savings</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between mb-4">
+                  <div className="text-sm text-gray-400">Total Value</div>
+                  <div className="font-medium">{formatCurrency(childrenTotal)}</div>
+                </div>
+                
+                <div className="space-y-3">
+                  {childrenInvestments.map(investment => (
+                    <div key={investment.id} className="flex justify-between items-center border-b border-gray-700 pb-3 last:border-0">
+                      <div className="flex-1">
+                        <div className="font-medium">{investment.name}</div>
+                        <div className="text-sm text-gray-400">{formatCurrency(investment.value)}</div>
+                      </div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <div className="w-24 h-12">
+                          <PortfolioChart 
+                            data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                            color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                            height={48} 
+                          />
+                        </div>
+                        <PercentageChange value={investment.percentageChange} iconSize={14} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
       
       <TabBar currentTab="portfolio" showAccountSwitcher={true} />
