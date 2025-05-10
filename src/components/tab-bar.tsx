@@ -25,14 +25,19 @@ export function TabBar({ currentTab = "home" }: TabBarProps) {
             to={tab.path}
             className={cn(
               "flex flex-col items-center px-3 py-1 relative",
-              isActive ? "text-finance-dark" : "text-gray-400"
+              isActive ? "text-gray-800" : "text-gray-400"
             )}
           >
-            <IconComponent size={20} />
-            <span className="text-xs mt-1">{tab.label}</span>
+            <div className="relative">
+              <IconComponent size={20} />
+              {isActive && (
+                <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-pink-500"></div>
+              )}
+            </div>
+            <span className="text-xs mt-1 font-medium">{tab.label}</span>
             
             {isActive && (
-              <div className="absolute -bottom-2 w-10 h-1 rounded-full bg-pink-500"></div>
+              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-10 h-1 rounded-full bg-pink-500"></div>
             )}
           </Link>
         );

@@ -15,7 +15,7 @@ export function DashboardHeader() {
   };
 
   return (
-    <div className="bg-white py-2 px-4 sticky top-0 z-10 shadow-sm flex items-center justify-between border-b border-gray-100">
+    <div className="bg-white py-1.5 px-4 sticky top-0 z-10 shadow-sm flex items-center justify-between border-b border-gray-100">
       <div className="flex-none">
         <AccountSwitcher
           accounts={accounts}
@@ -24,8 +24,12 @@ export function DashboardHeader() {
         />
       </div>
       
+      <div className="flex-1 text-center font-medium text-sm text-gray-700">
+        {currentAccount.name}
+      </div>
+      
       <div className="flex-none">
-        <Link to="/family" className="p-2 rounded-full hover:bg-gray-100">
+        <Link to="/family" className="p-1.5 rounded-full hover:bg-gray-100">
           <Settings size={18} className="text-gray-600" />
         </Link>
       </div>

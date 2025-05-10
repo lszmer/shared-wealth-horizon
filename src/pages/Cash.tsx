@@ -12,7 +12,6 @@ import {
   formattedTotalSpending,
   SpendingCategory
 } from "@/data/spendingData";
-import { CircleDollarSign } from "lucide-react";
 
 export default function Cash() {
   const [selectedCategory, setSelectedCategory] = useState<SpendingCategory | null>(null);
@@ -34,22 +33,17 @@ export default function Cash() {
       <DashboardHeader />
       
       <div className="p-4 space-y-4 flex flex-col h-[calc(100vh-128px)]">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="bg-finance-accent p-1.5 rounded-md bg-opacity-90">
-              <CircleDollarSign size={22} className="text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-finance-dark">Cash</h1>
-          </div>
-          
+        <div className="flex items-center justify-end">
           <div className="text-right">
-            <div className="text-sm text-gray-500">Current Month</div>
-            <div className="text-2xl font-extrabold">{formattedTotalSpending}</div>
+            <div className="text-sm text-gray-500 mb-1">Available This Month</div>
+            <div className="text-3xl font-extrabold text-gray-800">{formattedTotalSpending}</div>
           </div>
         </div>
         
-        <div className="bg-white p-5 rounded-xl shadow-sm flex-grow overflow-y-auto scrollbar-none">
-          <h2 className="text-lg font-medium mb-4">Monthly Spending</h2>
+        <div className="bg-white rounded-t-xl shadow-sm flex-grow overflow-hidden">
+          <div className="p-3 border-b border-gray-100">
+            <h2 className="text-lg font-medium text-gray-800">Monthly Spending</h2>
+          </div>
           
           <div className="flex flex-wrap">
             {spendingCategories.map((category) => (
