@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Portfolio from "./pages/Portfolio";
+import Cash from "./pages/Cash";
 import Home from "./pages/categories/Home";
 import Investments from "./pages/categories/Investments";
 import Vehicles from "./pages/categories/Vehicles";
@@ -25,7 +26,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Cash />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/home" element={<Home />} />
           <Route path="/investments" element={<Investments />} />
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/insurance" element={<Insurance />} />
           <Route path="/valuables" element={<Valuables />} />
           <Route path="/loans" element={<Loans />} />
+          <Route path="/furniture" element={<Valuables />} />
           <Route path="/family" element={<FamilyAccountManagement />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
