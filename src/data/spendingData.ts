@@ -6,7 +6,6 @@ export interface SpendingCategory {
   amount: number;
   percentage: number;
   color: string;
-  budget: number;
 }
 
 export interface Transaction {
@@ -32,64 +31,56 @@ export const spendingCategories: SpendingCategory[] = [
     name: "Housing",
     amount: 1500,
     percentage: 30,
-    color: "bg-blue-500",
-    budget: 1800
+    color: "bg-blue-500"
   },
   {
     id: "food",
     name: "Food",
     amount: 800,
     percentage: 16,
-    color: "bg-green-500",
-    budget: 1000
+    color: "bg-green-500"
   },
   {
     id: "mobility",
     name: "Mobility",
     amount: 600,
     percentage: 12,
-    color: "bg-yellow-500",
-    budget: 700
+    color: "bg-yellow-500"
   },
   {
     id: "entertainment",
     name: "Entertainment",
     amount: 400,
     percentage: 8,
-    color: "bg-purple-500",
-    budget: 500
+    color: "bg-purple-500"
   },
   {
     id: "utilities",
     name: "Utilities",
     amount: 350,
     percentage: 7,
-    color: "bg-orange-500",
-    budget: 450
+    color: "bg-orange-500"
   },
   {
     id: "savings",
     name: "Savings",
     amount: 750,
     percentage: 15,
-    color: "bg-mint-500",
-    budget: 800
+    color: "bg-mint-500"
   },
   {
     id: "insurance",
     name: "Insurance",
     amount: 250,
     percentage: 5,
-    color: "bg-pink-500",
-    budget: 250
+    color: "bg-pink-500"
   },
   {
     id: "other",
     name: "Other",
     amount: 350,
     percentage: 7,
-    color: "bg-gray-500",
-    budget: 400
+    color: "bg-gray-500"
   }
 ];
 
