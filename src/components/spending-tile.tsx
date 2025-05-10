@@ -11,7 +11,7 @@ interface SpendingTileProps {
 export function SpendingTile({ category, onClick }: SpendingTileProps) {
   return (
     <div 
-      className={`rounded-lg p-4 cursor-pointer transition-transform hover:scale-[1.02] ${category.color} text-white`}
+      className={`rounded-lg p-4 cursor-pointer transition-transform hover:scale-[1.02] w-full sm:w-auto ${category.color} text-white`}
       style={{ flexGrow: category.percentage }} 
       onClick={onClick}
     >

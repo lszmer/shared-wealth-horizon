@@ -6,6 +6,7 @@ import { properties } from "@/data/mockData";
 import { formatCurrency } from "@/lib/formatters";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Home as HomeIcon } from "lucide-react";
+import { housingTransactions } from "@/data/spendingData";
 
 export default function Home() {
   const [property] = useState(properties[0]);
@@ -75,9 +76,28 @@ export default function Home() {
             <CardTitle>Transaction History</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-6 text-gray-500">
-              <p>Recent mortgage and property transactions will appear here</p>
-            </div>
+            {housingTransactions.length > 0 ? (
+              <div className="rounded-md border">
+                <div className="bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 grid grid-cols-3">
+                  <div>Date</div>
+                  <div>Description</div>
+                  <div className="text-right">Amount</div>
+                </div>
+                <div className="divide-y">
+                  {housingTransactions.map((transaction) => (
+                    <div key={transaction.id} className="grid grid-cols-3 px-4 py-3 text-sm">
+                      <div className="text-gray-600">{transaction.date.split('-').slice(1).join('/')}</div>
+                      <div>{transaction.description}</div>
+                      <div className="text-right font-medium">{formatCurrency(transaction.amount)}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-6 text-gray-500">
+                <p>No transactions found</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

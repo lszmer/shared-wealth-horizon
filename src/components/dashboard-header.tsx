@@ -10,6 +10,7 @@ export function DashboardHeader() {
   const [currentAccount, setCurrentAccount] = useState<Account>(accounts[0]);
   const location = useLocation();
   const isPortfolioPage = location.pathname === "/portfolio";
+  const isCashPage = location.pathname === "/";
   
   const handleAccountChange = (account: Account) => {
     setCurrentAccount(account);
@@ -17,7 +18,7 @@ export function DashboardHeader() {
 
   return (
     <div className="bg-white p-4 sticky top-0 z-10 shadow-sm flex items-center">
-      {!isPortfolioPage && (
+      {!isPortfolioPage && !isCashPage && (
         <Link to="/portfolio" className="mr-3">
           <ArrowLeft size={20} />
         </Link>
