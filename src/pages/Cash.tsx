@@ -36,7 +36,7 @@ export default function Cash() {
       <div className="p-4 space-y-4 flex flex-col h-[calc(100vh-128px)]">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="bg-mint-500 p-1.5 rounded-md">
+            <div className="bg-finance-accent p-1.5 rounded-md bg-opacity-90">
               <CircleDollarSign size={22} className="text-white" />
             </div>
             <h1 className="text-2xl font-bold text-finance-dark">Cash</h1>
@@ -44,14 +44,14 @@ export default function Cash() {
           
           <div className="text-right">
             <div className="text-sm text-gray-500">Current Month</div>
-            <div className="text-xl font-semibold">{formattedTotalSpending}</div>
+            <div className="text-2xl font-extrabold">{formattedTotalSpending}</div>
           </div>
         </div>
         
-        <div className="bg-white p-5 rounded-xl shadow-sm flex-grow overflow-y-auto">
+        <div className="bg-white p-5 rounded-xl shadow-sm flex-grow overflow-y-auto scrollbar-none">
           <h2 className="text-lg font-medium mb-4">Monthly Spending</h2>
           
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap">
             {spendingCategories.map((category) => (
               <SpendingTile
                 key={category.id}

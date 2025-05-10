@@ -24,12 +24,16 @@ export function TabBar({ currentTab = "home" }: TabBarProps) {
             key={tab.id}
             to={tab.path}
             className={cn(
-              "flex flex-col items-center px-3 py-1",
+              "flex flex-col items-center px-3 py-1 relative",
               isActive ? "text-finance-dark" : "text-gray-400"
             )}
           >
             <IconComponent size={20} />
             <span className="text-xs mt-1">{tab.label}</span>
+            
+            {isActive && (
+              <div className="absolute -bottom-2 w-10 h-1 rounded-full bg-pink-500"></div>
+            )}
           </Link>
         );
       })}

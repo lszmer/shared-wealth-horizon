@@ -39,15 +39,21 @@ export function AccountSwitcher({
       <PopoverTrigger asChild>
         <button className="flex items-center gap-2">
           {currentAccount.type === "personal" ? (
-            <AvatarButton initial={currentAccount.initial} />
+            <div className="flex items-center gap-2">
+              <AvatarButton initial={currentAccount.initial} />
+              <span className="font-medium text-sm hidden sm:inline">{currentAccount.name}</span>
+            </div>
           ) : (
-            <div className="flex -space-x-2">
-              <AvatarButton initial={currentAccount.initial} size="sm" />
-              <AvatarButton 
-                initial={currentAccount.partnerInitial || ""} 
-                size="sm" 
-                color="bg-finance-neutral" 
-              />
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                <AvatarButton initial={currentAccount.initial} size="sm" />
+                <AvatarButton 
+                  initial={currentAccount.partnerInitial || ""} 
+                  size="sm" 
+                  color="bg-finance-neutral" 
+                />
+              </div>
+              <span className="font-medium text-sm hidden sm:inline">{currentAccount.name}</span>
             </div>
           )}
           <ChevronDown size={16} />

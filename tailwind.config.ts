@@ -67,13 +67,16 @@ export default {
 					positive: '#22C55E',
 					negative: '#EF4444',
 					neutral: '#8E9196',
-					accent: '#9b87f5',
+					accent: '#8B5CF6',
 					dark: '#1A1F2C'
 				},
 				mint: {
-					600: '#10B981',
-					500: '#10B981',
-					400: '#34D399',
+					600: '#0EA5E9',
+					500: '#0EA5E9',
+					400: '#38BDF8',
+				},
+				pink: {
+					500: '#EC4899',
 				}
 			},
 			borderRadius: {
