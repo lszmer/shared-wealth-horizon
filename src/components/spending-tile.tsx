@@ -24,16 +24,16 @@ const categoryEmojis: Record<string, string> = {
   insurance: "🔒"
 };
 
-// Generate distinctive but harmonious colors for each category
+// Generate transparent backgrounds with subtle distinctions
 const categoryColors: Record<string, { bg: string, fill: string }> = {
-  housing: { bg: "bg-blue-100", fill: "bg-blue-400" },
-  food: { bg: "bg-green-100", fill: "bg-green-400" },
-  mobility: { bg: "bg-amber-100", fill: "bg-amber-400" },
-  entertainment: { bg: "bg-purple-100", fill: "bg-purple-400" },
-  utilities: { bg: "bg-orange-100", fill: "bg-orange-400" },
-  savings: { bg: "bg-cyan-100", fill: "bg-cyan-400" },
-  insurance: { bg: "bg-pink-100", fill: "bg-pink-400" },
-  other: { bg: "bg-gray-100", fill: "bg-gray-400" }
+  housing: { bg: "bg-black/20", fill: "bg-white/30" },
+  food: { bg: "bg-black/30", fill: "bg-white/30" },
+  mobility: { bg: "bg-black/25", fill: "bg-white/30" },
+  entertainment: { bg: "bg-black/35", fill: "bg-white/30" },
+  utilities: { bg: "bg-black/40", fill: "bg-white/30" },
+  savings: { bg: "bg-black/15", fill: "bg-white/30" },
+  insurance: { bg: "bg-black/45", fill: "bg-white/30" },
+  other: { bg: "bg-black/10", fill: "bg-white/30" }
 };
 
 export function SpendingTile({ category, onClick }: SpendingTileProps) {
@@ -41,19 +41,19 @@ export function SpendingTile({ category, onClick }: SpendingTileProps) {
   const budget = category.budget || 0;
   const percentOfBudget = budget > 0 ? (category.amount / budget) * 100 : 0;
   
-  const colors = categoryColors[category.id] || { bg: "bg-gray-100", fill: "bg-gray-400" };
+  const colors = categoryColors[category.id] || { bg: "bg-black/20", fill: "bg-white/30" };
   
   return (
     <div 
-      className={`p-3 cursor-pointer border-r border-b border-gray-100 transition-all hover:bg-white relative overflow-hidden ${colors.bg}`}
+      className={`p-3 cursor-pointer border border-white/10 backdrop-blur-sm transition-all hover:bg-white/5 relative overflow-hidden ${colors.bg}`}
       style={{ flexGrow: category.percentage }} 
       onClick={onClick}
     >
-      {/* Progress fill - absolutely positioned to fill from left */}
+      {/* Progress fill - absolutely positioned to fill from bottom */}
       {budget > 0 && (
         <div 
-          className={`absolute left-0 top-0 bottom-0 h-full ${colors.fill} opacity-40 z-0`}
-          style={{ width: `${Math.min(percentOfBudget, 100)}%` }}
+          className={`absolute left-0 right-0 bottom-0 ${colors.fill}`}
+          style={{ height: `${Math.min(percentOfBudget, 100)}%` }}
         />
       )}
       
@@ -61,16 +61,7 @@ export function SpendingTile({ category, onClick }: SpendingTileProps) {
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xl">{emoji}</span>
-          <h3 className="font-bold text-gray-800">{category.name}</h3>
-        </div>
-        
-        <div className="flex justify-between items-baseline">
-          <span className="text-gray-700 font-medium">{formatCurrency(category.amount)}</span>
-          {budget > 0 && (
-            <span className={`text-xs ${percentOfBudget > 100 ? 'text-finance-negative' : 'text-gray-500'}`}>
-              {Math.round(percentOfBudget)}% of budget
-            </span>
-          )}
+          <h3 className="font-bold text-white">{category.name}</h3>
         </div>
       </div>
     </div>
