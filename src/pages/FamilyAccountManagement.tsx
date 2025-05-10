@@ -1,12 +1,12 @@
 
 import React, { useState } from "react";
-import { TabBar } from "@/components/tab-bar";
 import { FamilyTree } from "@/components/family/family-tree";
 import { RoleModal } from "@/components/family/role-modal";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { DashboardHeader } from "@/components/dashboard-header";
 
 export type FamilyMember = {
   id: string;
@@ -36,6 +36,8 @@ export default function FamilyAccountManagement() {
 
   return (
     <div className="min-h-screen bg-white pb-16">
+      <DashboardHeader />
+      
       <div className="px-4 py-6">
         <div className="flex items-center mb-6">
           <Link to="/">
@@ -61,8 +63,6 @@ export default function FamilyAccountManagement() {
           open={!!selectedMember}
         />
       )}
-
-      <TabBar currentTab="profile" />
     </div>
   );
 }

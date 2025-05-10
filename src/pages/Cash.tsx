@@ -33,7 +33,7 @@ export default function Cash() {
     <div className="min-h-screen bg-gray-50 pb-20">
       <DashboardHeader />
       
-      <div className="p-4 space-y-6 flex flex-col h-[calc(100vh-144px)]">
+      <div className="p-4 space-y-4 flex flex-col h-[calc(100vh-128px)]">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="bg-mint-500 p-1.5 rounded-md">
