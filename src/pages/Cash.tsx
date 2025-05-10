@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { DashboardHeader } from "@/components/dashboard-header";
 import { TabBar } from "@/components/tab-bar";
 import { SpendingTile } from "@/components/spending-tile";
 import { TransactionPopup } from "@/components/transaction-popup";
@@ -30,17 +29,15 @@ export default function Cash() {
   
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <DashboardHeader />
-      
-      <div className="p-4 space-y-4 flex flex-col h-[calc(100vh-128px)]">
-        <div className="flex items-center justify-end">
+      <div className="p-4 space-y-4 flex flex-col h-[calc(100vh-80px)]">
+        <div className="flex items-center justify-end mb-2">
           <div className="text-right">
             <div className="text-sm text-gray-500 mb-1">Available This Month</div>
-            <div className="text-3xl font-extrabold text-gray-800">{formattedTotalSpending}</div>
+            <div className="text-4xl font-extrabold text-gray-800">{formattedTotalSpending}</div>
           </div>
         </div>
         
-        <div className="bg-white rounded-t-xl shadow-sm flex-grow overflow-hidden">
+        <div className="bg-white flex-grow overflow-hidden shadow-sm">
           <div className="p-3 border-b border-gray-100">
             <h2 className="text-lg font-medium text-gray-800">Monthly Spending</h2>
           </div>
