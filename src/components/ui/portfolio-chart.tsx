@@ -1,33 +1,57 @@
 
-import { useEffect, useState, useRef } from "react";
-import { LineChart, Line, ResponsiveContainer } from "recharts";
+import { useEffect, useState } from "react";
+import { LineChart, Line, ResponsiveContainer, Area, AreaChart } from "recharts";
 
 interface PortfolioChartProps {
   data: { value: number }[];
   color?: string;
   height?: number;
+  areaChart?: boolean;
 }
 
 export function PortfolioChart({ 
   data, 
   color = "#9b87f5",
-  height = 100 
+  height = 100,
+  areaChart = false
 }: PortfolioChartProps) {
-  const [chartData, setChartData] = useState(data);
+  // Create gradient ID based on color to ensure unique gradients for each chart
+  const gradientId = `chartGradient-${color.replace('#', '')}`;
   
   return (
     <div style={{ width: '100%', height }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData}>
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke={color}
-            strokeWidth={2}
-            dot={false}
-            isAnimationActive={false}
-          />
-        </LineChart>
+        {areaChart ? (
+          <AreaChart data={data}>
+            <defs>
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={color} stopOpacity={0.8}/>
+                <stop offset="100%" stopColor={color} stopOpacity={0.1}/>
+              </linearGradient>
+            </defs>
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke={color}
+              strokeWidth={2}
+              fillOpacity={1}
+              fill={`url(#${gradientId})`}
+              dot={false}
+              isAnimationActive={false}
+            />
+          </AreaChart>
+        ) : (
+          <LineChart data={data}>
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke={color}
+              strokeWidth={2}
+              dot={false}
+              isAnimationActive={false}
+            />
+          </LineChart>
+        )}
       </ResponsiveContainer>
     </div>
   );

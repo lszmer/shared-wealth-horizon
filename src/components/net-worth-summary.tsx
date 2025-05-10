@@ -38,14 +38,14 @@ export function NetWorthSummary() {
       </h2>
       
       <div className="flex justify-between mb-4">
-        <div className="bg-purple-50 rounded-lg p-2 flex-1 mr-2">
+        <div className="bg-purple-50 rounded-lg p-3 flex-1 mr-2">
           <div className="text-sm text-gray-500">Assets</div>
           <div className="text-lg font-medium text-finance-dark flex items-center">
             <ArrowUpRight className="text-finance-positive mr-1" size={16} />
             {formatCurrency(assets)}
           </div>
         </div>
-        <div className="bg-red-50 rounded-lg p-2 flex-1">
+        <div className="bg-red-50 rounded-lg p-3 flex-1">
           <div className="text-sm text-gray-500">Liabilities</div>
           <div className="text-lg font-medium text-finance-negative flex items-center">
             <ArrowDownRight className="text-finance-negative mr-1" size={16} />
@@ -91,13 +91,30 @@ export function NetWorthSummary() {
             </PieChart>
           </ResponsiveContainer>
         </ChartContainer>
+        
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+          <div className="text-sm text-gray-500">Net</div>
+          <div className="font-semibold">{formatCurrency(netWorth)}</div>
+        </div>
       </div>
       
-      <div className="flex justify-center items-center mt-4">
-        <div className="text-center bg-gradient-to-r from-purple-50 to-blue-50 px-6 py-3 rounded-xl">
-          <div className="text-sm text-gray-500">Total Net Worth</div>
-          <div className="text-2xl font-bold text-finance-dark">{formatCurrency(netWorth)}</div>
-        </div>
+      <div className="grid grid-cols-4 gap-2 mt-4">
+        {netValuesByCategory.map((category) => (
+          <div 
+            key={category.id} 
+            className="text-center p-2 rounded-lg" 
+            style={{ 
+              backgroundColor: `${CATEGORY_COLORS[category.id as keyof typeof CATEGORY_COLORS]}15`
+            }}
+          >
+            <div 
+              className="w-3 h-3 rounded-full mx-auto mb-1"
+              style={{ backgroundColor: CATEGORY_COLORS[category.id as keyof typeof CATEGORY_COLORS] }}
+            ></div>
+            <div className="text-xs font-medium truncate">{category.name}</div>
+            <div className="text-xs text-gray-500 truncate">{formatCurrency(category.value)}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

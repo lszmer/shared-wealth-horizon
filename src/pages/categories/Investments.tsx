@@ -1,14 +1,19 @@
 
+import { useState } from "react";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { TabBar } from "@/components/tab-bar";
 import { investments } from "@/data/mockData";
 import { formatCurrency } from "@/lib/formatters";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PiggyBank, Landmark, GraduationCap } from "lucide-react";
+import { PiggyBank, Landmark, GraduationCap, TrendingUp } from "lucide-react";
 import { PercentageChange } from "@/components/ui/percentage-change";
 import { Investment } from "@/types/portfolio";
+import { PortfolioChart, generateChartData } from "@/components/ui/portfolio-chart";
+import { TimeFilter } from "@/components/ui/time-filter";
 
 export default function Investments() {
+  const [timeframe, setTimeframe] = useState("1M");
+  
   // Group investments by type
   const stockInvestments = investments.filter(inv => inv.type === 'stock');
   const savingsInvestments = investments.filter(inv => inv.type === 'savings');
@@ -23,6 +28,14 @@ export default function Investments() {
   const childrenTotal = getTotal(childrenInvestments);
   const totalInvestments = getTotal(investments);
   
+  // Generate summary chart data
+  const summaryTrend = 'up';
+  const summaryChartData = generateChartData(30, summaryTrend);
+  
+  const handleTimeframeChange = (option: string) => {
+    setTimeframe(option);
+  };
+  
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <DashboardHeader />
@@ -33,11 +46,30 @@ export default function Investments() {
           <h1 className="text-2xl font-bold text-finance-dark">Savings & Investments</h1>
         </div>
         
-        <Card className="bg-purple-50 border-purple-100">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <div className="text-sm text-gray-500">Total Value</div>
-              <div className="text-3xl font-bold text-finance-dark">{formatCurrency(totalInvestments)}</div>
+        <Card className="border-purple-100">
+          <CardContent className="pt-6 pb-4">
+            <div className="flex flex-col space-y-4">
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="text-sm text-gray-500">Total Value</div>
+                  <div className="text-3xl font-bold text-finance-dark">{formatCurrency(totalInvestments)}</div>
+                </div>
+                <div className="flex items-center bg-purple-50 rounded-lg px-3 py-1">
+                  <TrendingUp size={16} className="text-purple-500 mr-1" />
+                  <span className="text-sm font-medium text-purple-700">+8.4%</span>
+                </div>
+              </div>
+              
+              <div className="h-40 -mx-2">
+                <PortfolioChart data={summaryChartData} color="#9b87f5" height={160} />
+              </div>
+              
+              <TimeFilter 
+                options={["1D", "1W", "1M", "1Y", "MAX"]} 
+                currentOption={timeframe}
+                onChange={handleTimeframeChange}
+                className="justify-start"
+              />
             </div>
           </CardContent>
         </Card>
@@ -68,10 +100,17 @@ export default function Investments() {
                     )}
                     <div>
                       <div className="font-medium">{investment.name}</div>
+                      <div className="text-sm text-gray-500">{formatCurrency(investment.value)}</div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="font-medium">{formatCurrency(investment.value)}</div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-24 h-12">
+                      <PortfolioChart 
+                        data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                        color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                        height={48} 
+                      />
+                    </div>
                     <PercentageChange value={investment.percentageChange} iconSize={14} />
                   </div>
                 </div>
@@ -98,9 +137,16 @@ export default function Investments() {
                 <div key={investment.id} className="flex justify-between items-center border-b pb-3 last:border-0">
                   <div>
                     <div className="font-medium">{investment.name}</div>
+                    <div className="text-sm text-gray-500">{formatCurrency(investment.value)}</div>
                   </div>
-                  <div className="text-right">
-                    <div className="font-medium">{formatCurrency(investment.value)}</div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-24 h-12">
+                      <PortfolioChart 
+                        data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                        color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                        height={48} 
+                      />
+                    </div>
                     <PercentageChange value={investment.percentageChange} iconSize={14} />
                   </div>
                 </div>
@@ -127,9 +173,16 @@ export default function Investments() {
                 <div key={investment.id} className="flex justify-between items-center border-b pb-3 last:border-0">
                   <div>
                     <div className="font-medium">{investment.name}</div>
+                    <div className="text-sm text-gray-500">{formatCurrency(investment.value)}</div>
                   </div>
-                  <div className="text-right">
-                    <div className="font-medium">{formatCurrency(investment.value)}</div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-24 h-12">
+                      <PortfolioChart 
+                        data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                        color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                        height={48} 
+                      />
+                    </div>
                     <PercentageChange value={investment.percentageChange} iconSize={14} />
                   </div>
                 </div>
@@ -156,9 +209,16 @@ export default function Investments() {
                 <div key={investment.id} className="flex justify-between items-center border-b pb-3 last:border-0">
                   <div>
                     <div className="font-medium">{investment.name}</div>
+                    <div className="text-sm text-gray-500">{formatCurrency(investment.value)}</div>
                   </div>
-                  <div className="text-right">
-                    <div className="font-medium">{formatCurrency(investment.value)}</div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-24 h-12">
+                      <PortfolioChart 
+                        data={generateChartData(15, investment.percentageChange >= 0 ? 'up' : 'down')} 
+                        color={investment.percentageChange >= 0 ? "#22C55E" : "#EF4444"} 
+                        height={48} 
+                      />
+                    </div>
                     <PercentageChange value={investment.percentageChange} iconSize={14} />
                   </div>
                 </div>
