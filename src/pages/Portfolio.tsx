@@ -4,6 +4,7 @@ import { CategoryTile } from "@/components/category-tile";
 import { NetWorthSummary } from "@/components/net-worth-summary";
 import { categoryTiles } from "@/data/mockData";
 import { TabBar } from "@/components/tab-bar";
+import { Briefcase } from "lucide-react";
 
 export default function Portfolio() {
   return (
@@ -11,7 +12,12 @@ export default function Portfolio() {
       <DashboardHeader />
       
       <div className="p-4 space-y-6">
-        <h1 className="text-2xl font-bold text-finance-dark">Portfolio</h1>
+        <div className="flex items-center space-x-2">
+          <div className="bg-finance-accent p-1.5 rounded-md">
+            <Briefcase size={22} className="text-white" />
+          </div>
+          <h1 className="text-2xl font-bold text-finance-dark">Portfolio</h1>
+        </div>
         
         <NetWorthSummary />
         

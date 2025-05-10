@@ -15,35 +15,37 @@ export function CategoryTile({ category }: CategoryTileProps) {
   const netValue = (value || 0) - (liability || 0);
   const percentChange = netValue !== 0 ? ((value || 0) / (netValue || 1) - 1) * 100 : 0;
   
-  // Map icon string to the actual Lucide icon component
+  // Map icon string to the actual Lucide icon component with enhanced size and styling
   const getIcon = () => {
     switch (icon) {
       case "home":
-        return <Home size={24} />;
+        return <Home size={28} className="text-white" />;
       case "piggy-bank":
-        return <PiggyBank size={24} />;
+        return <PiggyBank size={28} className="text-white" />;
       case "car":
-        return <Car size={24} />;
+        return <Car size={28} className="text-white" />;
       case "shield":
-        return <Shield size={24} />;
+        return <Shield size={28} className="text-white" />;
       case "diamond":
-        return <Gem size={24} />;
+        return <Gem size={28} className="text-white" />;
       case "credit-card":
-        return <CreditCard size={24} />;
+        return <CreditCard size={28} className="text-white" />;
       default:
-        return <Circle size={24} />;
+        return <Circle size={28} className="text-white" />;
     }
   };
 
   return (
-    <Link to={path} className="block">
+    <Link to={path} className="block transform transition-transform hover:scale-[1.02] active:scale-[0.98]">
       <div className={cn(
-        "rounded-xl p-4 text-white flex flex-col h-36",
+        "rounded-xl p-4 text-white flex flex-col h-36 shadow-md",
         color
       )}>
         <div className="flex justify-between items-start mb-2">
           <h3 className="text-lg font-medium">{title}</h3>
-          {getIcon()}
+          <div className="bg-white/20 rounded-full p-2">
+            {getIcon()}
+          </div>
         </div>
         
         {value ? (
