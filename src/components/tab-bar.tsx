@@ -1,5 +1,5 @@
 
-import { Home, Search, LayoutGrid, User } from "lucide-react";
+import { Home, LayoutGrid, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -9,10 +9,9 @@ interface TabBarProps {
 
 export function TabBar({ currentTab = "home" }: TabBarProps) {
   const tabs = [
-    { id: "home", icon: Home, label: "Home", path: "/" },
-    { id: "search", icon: Search, label: "Search", path: "/search" },
+    { id: "home", icon: Home, label: "Cash", path: "/" },
     { id: "portfolio", icon: LayoutGrid, label: "Portfolio", path: "/portfolio" },
-    { id: "profile", icon: User, label: "Profile", path: "/profile" },
+    { id: "profile", icon: User, label: "People", path: "/profile" },
   ];
 
   return (

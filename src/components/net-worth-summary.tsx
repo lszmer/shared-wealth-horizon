@@ -98,24 +98,7 @@ export function NetWorthSummary() {
         </div>
       </div>
       
-      <div className="grid grid-cols-4 gap-2 mt-4">
-        {netValuesByCategory.map((category) => (
-          <div 
-            key={category.id} 
-            className="text-center p-2 rounded-lg" 
-            style={{ 
-              backgroundColor: `${CATEGORY_COLORS[category.id as keyof typeof CATEGORY_COLORS]}15`
-            }}
-          >
-            <div 
-              className="w-3 h-3 rounded-full mx-auto mb-1"
-              style={{ backgroundColor: CATEGORY_COLORS[category.id as keyof typeof CATEGORY_COLORS] }}
-            ></div>
-            <div className="text-xs font-medium truncate">{category.name}</div>
-            <div className="text-xs text-gray-500 truncate">{formatCurrency(category.value)}</div>
-          </div>
-        ))}
-      </div>
+      {/* Remove the legend boxes section that was here */}
     </div>
   );
 }

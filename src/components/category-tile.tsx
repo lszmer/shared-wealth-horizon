@@ -35,24 +35,49 @@ export function CategoryTile({ category }: CategoryTileProps) {
     }
   };
 
+  // Background image mapping based on category icon
+  const getBgImage = () => {
+    switch (icon) {
+      case "home":
+        return "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
+      case "piggy-bank":
+        return "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
+      case "car":
+        return "https://images.unsplash.com/photo-1494891848038-7bd202a2afeb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
+      case "shield":
+        return "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
+      case "diamond":
+        return "https://images.unsplash.com/photo-1460574283810-2aab119d8511?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3";
+      default:
+        return "";
+    }
+  };
+
   return (
     <Link to={path} className="block transform transition-transform hover:scale-[1.02] active:scale-[0.98]">
-      <div className={cn(
-        "rounded-xl p-4 text-white flex flex-col h-36 shadow-md relative overflow-hidden",
-        color
-      )}>
-        {/* Add a decorative circle in the background */}
-        <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-white/10 rounded-full"></div>
-        <div className="absolute -left-4 -top-4 w-16 h-16 bg-white/5 rounded-full"></div>
+      <div 
+        className={cn(
+          "rounded-xl p-4 text-white flex flex-col h-36 shadow-md relative overflow-hidden",
+          color
+        )}
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url(${getBgImage()})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+        {/* Decorative elements */}
+        <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-white/10 backdrop-blur-sm rounded-full"></div>
+        <div className="absolute -left-4 -top-4 w-16 h-16 bg-white/5 backdrop-blur-sm rounded-full"></div>
         
-        <div className="flex justify-between items-start mb-2">
+        <div className="flex justify-between items-start mb-2 relative z-10">
           <h3 className="text-lg font-medium">{title}</h3>
-          <div className="bg-white/20 rounded-full p-2">
+          <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
             {getIcon()}
           </div>
         </div>
         
-        <div className="mt-auto grid grid-cols-3 gap-1">
+        <div className="mt-auto grid grid-cols-3 gap-1 relative z-10">
           {value !== undefined && (
             <div className="col-span-1">
               <div className="text-xs opacity-80">Value</div>
@@ -80,7 +105,7 @@ export function CategoryTile({ category }: CategoryTileProps) {
         </div>
         
         {percentChange !== 0 && (
-          <div className="mt-2">
+          <div className="mt-2 relative z-10">
             <PercentageChange 
               value={percentChange} 
               className="text-white" 
