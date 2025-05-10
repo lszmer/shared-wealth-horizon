@@ -4,6 +4,7 @@ import { TabBar } from "@/components/tab-bar";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Wallet } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 import { 
   ResponsiveContainer, 
   Sankey, 
@@ -42,6 +43,22 @@ const cashFlowData = {
   ],
 };
 
+const handleNodeClick = (nodeId: number, nodeName: string) => {
+  if (nodeName === "Food") {
+    toast.success("Food expenses breakdown", {
+      description: "Monthly food expenses: $800 - Click for detailed breakdown",
+      action: {
+        label: "View Details",
+        onClick: () => console.log("Opening food expense details")
+      }
+    });
+  } else {
+    toast.info(`Clicked on ${nodeName}`, {
+      description: `You selected the ${nodeName} category`
+    });
+  }
+};
+
 // Custom Sankey node with enhanced styling
 const CustomSankeyNode = ({ x, y, width, height, index, payload }: any) => {
   const colors = {
@@ -59,16 +76,22 @@ const CustomSankeyNode = ({ x, y, width, height, index, payload }: any) => {
   };
   const nodeName = payload.name;
   const color = colors[nodeName as keyof typeof colors] || '#8E9196';
-
+  const isFood = nodeName === "Food";
+  
   return (
-    <>
+    <g 
+      onClick={() => handleNodeClick(index, nodeName)}
+      style={{ cursor: 'pointer' }}
+    >
       <Rectangle
         x={x}
         y={y}
         width={width}
         height={height}
         fill={color}
-        fillOpacity={0.9}
+        fillOpacity={isFood ? 1 : 0.9}
+        stroke={isFood ? "#ffffff" : "none"}
+        strokeWidth={isFood ? 1 : 0}
         rx={4}
         ry={4}
       />
@@ -78,12 +101,24 @@ const CustomSankeyNode = ({ x, y, width, height, index, payload }: any) => {
         textAnchor="middle"
         dominantBaseline="middle"
         fill="#FFFFFF"
-        fontSize={12}
+        fontSize={14}
         fontWeight={500}
       >
         {nodeName}
       </text>
-    </>
+      {isFood && (
+        <text
+          x={x + width / 2}
+          y={y + height / 2 + 20}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill="#FFFFFF"
+          fontSize={10}
+        >
+          (Click for details)
+        </text>
+      )}
+    </g>
   );
 };
 
@@ -145,13 +180,16 @@ export default function Cash() {
                   data={cashFlowData}
                   node={<CustomSankeyNode />}
                   link={<CustomSankeyLink />}
-                  nodePadding={40}
+                  nodePadding={20}
+                  nodeWidth={120}
                   margin={{
-                    top: 10,
-                    right: 10,
-                    bottom: 10,
-                    left: 10
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20
                   }}
+                  // Set layout to vertical (rotates diagram by 90 degrees)
+                  layout="vertical"
                 >
                   <Tooltip content={<CustomTooltip />} />
                 </Sankey>
