@@ -2,36 +2,14 @@
 import { 
   calculateNetWorth, 
   calculateTotalAssets, 
-  calculateTotalLiabilities, 
-  getNetValuesByCategory 
+  calculateTotalLiabilities
 } from "@/data/mockData";
 import { formatCurrency } from "@/lib/formatters";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 export function NetWorthSummary() {
   const assets = calculateTotalAssets();
   const liabilities = calculateTotalLiabilities();
   const netWorth = calculateNetWorth();
-  
-  // Get net values by category for the pie chart
-  const netValuesByCategory = getNetValuesByCategory();
-  
-  // Colors for different categories
-  const CATEGORY_COLORS = {
-    home: "#4299e1", // blue
-    investments: "#9b87f5", // purple
-    vehicles: "#48bb78", // green
-    valuables: "#f687b3", // pink
-  };
-
-  // Chart configuration for categories
-  const chartConfig = {
-    home: { label: "Home", color: "#4299e1" },
-    investments: { label: "Investments", color: "#9b87f5" },
-    vehicles: { label: "Vehicles", color: "#48bb78" },
-    valuables: { label: "Valuables", color: "#f687b3" },
-  };
   
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 relative overflow-hidden">
@@ -54,40 +32,10 @@ export function NetWorthSummary() {
         </div>
       </div>
       
-      <div className="h-40 relative">
-        <ChartContainer config={chartConfig}>
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={netValuesByCategory}
-                cx="50%"
-                cy="50%"
-                innerRadius={40}
-                outerRadius={70}
-                paddingAngle={2}
-                dataKey="value"
-                nameKey="name"
-                label={false}
-                strokeWidth={2}
-                stroke="#fff"
-              >
-                {netValuesByCategory.map((entry, index) => (
-                  <Cell 
-                    key={`cell-${index}`} 
-                    fill={CATEGORY_COLORS[entry.id as keyof typeof CATEGORY_COLORS]} 
-                  />
-                ))}
-              </Pie>
-              <ChartTooltip
-                content={<ChartTooltipContent labelKey="name" />}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-        
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <div className="text-sm text-gray-500">Net</div>
-          <div className="font-semibold">{formatCurrency(netWorth)}</div>
+      <div className="flex justify-center items-center h-20">
+        <div className="text-center">
+          <div className="text-sm text-gray-500">Net Worth</div>
+          <div className="text-2xl font-semibold">{formatCurrency(netWorth)}</div>
         </div>
       </div>
     </div>
