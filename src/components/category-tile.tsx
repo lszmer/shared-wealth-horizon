@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { CategoryTile as CategoryTileType } from "@/types/portfolio";
-import * as Icons from "lucide-react";
+import { Circle, Home, PiggyBank, Car, Shield, Gem, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PercentageChange } from "@/components/ui/percentage-change";
 import { formatCurrency } from "@/lib/formatters";
@@ -15,8 +15,25 @@ export function CategoryTile({ category }: CategoryTileProps) {
   const netValue = (value || 0) - (liability || 0);
   const percentChange = netValue !== 0 ? ((value || 0) / (netValue || 1) - 1) * 100 : 0;
   
-  // Dynamically render the appropriate Lucide icon
-  const IconComponent = Icons[icon as keyof typeof Icons];
+  // Map icon string to the actual Lucide icon component
+  const getIcon = () => {
+    switch (icon) {
+      case "home":
+        return <Home size={24} />;
+      case "piggy-bank":
+        return <PiggyBank size={24} />;
+      case "car":
+        return <Car size={24} />;
+      case "shield":
+        return <Shield size={24} />;
+      case "diamond":
+        return <Gem size={24} />;
+      case "credit-card":
+        return <CreditCard size={24} />;
+      default:
+        return <Circle size={24} />;
+    }
+  };
 
   return (
     <Link to={path} className="block">
@@ -26,7 +43,7 @@ export function CategoryTile({ category }: CategoryTileProps) {
       )}>
         <div className="flex justify-between items-start mb-2">
           <h3 className="text-lg font-medium">{title}</h3>
-          {IconComponent && <IconComponent size={24} />}
+          {getIcon()}
         </div>
         
         {value ? (

@@ -64,6 +64,8 @@ export const categoryTiles: CategoryTile[] = [
     id: "loans",
     title: "Loans & Credit",
     path: "/loans",
+    // Fixed: Added the required value property with 0 since this is only liabilities
+    value: 0,
     liability: 15300,
     icon: "credit-card",
     color: "bg-red-500",

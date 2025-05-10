@@ -1,7 +1,7 @@
 
 import { calculateNetWorth, calculateTotalAssets, calculateTotalLiabilities } from "@/data/mockData";
 import { formatCurrency } from "@/lib/formatters";
-import { Chart, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 export function NetWorthSummary() {
