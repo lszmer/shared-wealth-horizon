@@ -1,13 +1,39 @@
 
+import { useState } from "react";
 import { Wallet, LayoutGrid } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { AccountSwitcher } from "./account-switcher";
 
 interface TabBarProps {
   currentTab?: string;
+  showAccountSwitcher?: boolean;
 }
 
-export function TabBar({ currentTab = "home" }: TabBarProps) {
+export function TabBar({ currentTab = "home", showAccountSwitcher = false }: TabBarProps) {
+  const [currentAccount, setCurrentAccount] = useState({
+    id: "1",
+    name: "Personal",
+    type: "personal",
+    initial: "J"
+  });
+  
+  const accounts = [
+    {
+      id: "1",
+      name: "Personal",
+      type: "personal",
+      initial: "J"
+    },
+    {
+      id: "2",
+      name: "Joint Account",
+      type: "joint",
+      initial: "J",
+      partnerInitial: "A"
+    }
+  ];
+  
   const tabs = [
     { id: "home", icon: Wallet, label: "Cash", path: "/" },
     { id: "wealth", icon: LayoutGrid, label: "Wealth", path: "/wealth" },
