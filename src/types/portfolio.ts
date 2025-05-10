@@ -62,8 +62,16 @@ export interface Valuable {
 }
 
 export interface Furniture extends Valuable {
+  targetValue: number;
+  moneySaved: number;
   dueDate?: string;
   invited?: string[];
+  contributions?: Contribution[];
+}
+
+export interface Contribution {
+  contributorName: string;
+  amount: number;
 }
 
 export interface Liability {

@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Sofa, Plus, UserPlus, Calendar, Save } from "lucide-react";
+import { Sofa, Plus, UserPlus, Calendar, Save, DollarSign } from "lucide-react";
 import { TabBar } from "@/components/tab-bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,46 +10,59 @@ import { Label } from "@/components/ui/label";
 import { formatCurrency } from "@/lib/formatters";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { accounts } from "@/data/mockData";
-import { Valuable } from "@/types/portfolio";
-
-interface FurnitureItem extends Valuable {
-  dueDate?: string;
-  invited?: string[];
-}
+import { Furniture as FurnitureType, Contribution } from "@/types/portfolio";
 
 // Sample furniture data
-const initialFurnitureData: FurnitureItem[] = [
+const initialFurnitureData: FurnitureType[] = [
   {
     id: "furn1",
     name: "Sofa",
     description: "Living room sofa",
     value: 2500,
+    targetValue: 2500,
+    moneySaved: 1000,
     type: "other",
     dueDate: "2025-10-15",
-    invited: ["Alex"]
+    invited: ["Alex"],
+    contributions: [
+      { contributorName: "You", amount: 600 },
+      { contributorName: "Alex", amount: 400 }
+    ]
   },
   {
     id: "furn2",
     name: "Dining Table",
     description: "Kitchen dining table with 6 chairs",
     value: 1800,
+    targetValue: 1800,
+    moneySaved: 500,
     type: "other",
-    dueDate: "2025-08-20"
+    dueDate: "2025-08-20",
+    contributions: [
+      { contributorName: "You", amount: 500 }
+    ]
   }
 ];
 
 export default function Furniture() {
-  const [furnitureItems, setFurnitureItems] = useState<FurnitureItem[]>(initialFurnitureData);
+  const [furnitureItems, setFurnitureItems] = useState<FurnitureType[]>(initialFurnitureData);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
+  const [isContributeDialogOpen, setIsContributeDialogOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   
-  const [newItem, setNewItem] = useState<Partial<FurnitureItem>>({
+  const [newItem, setNewItem] = useState<Partial<FurnitureType>>({
     name: "",
     value: 0,
+    targetValue: 0,
+    moneySaved: 0,
     description: "",
     dueDate: ""
+  });
+
+  const [contribution, setContribution] = useState({
+    amount: 0,
+    contributorName: "You"
   });
 
   const contacts = [
@@ -64,17 +77,24 @@ export default function Furniture() {
       return;
     }
 
-    const newFurnitureItem: FurnitureItem = {
+    const targetVal = newItem.targetValue || newItem.value || 0;
+
+    const newFurnitureItem: FurnitureType = {
       id: `furn${Date.now()}`,
       name: newItem.name || "",
       description: newItem.description,
       value: Number(newItem.value) || 0,
+      targetValue: targetVal,
+      moneySaved: Number(newItem.moneySaved) || 0,
       type: "other",
-      dueDate: newItem.dueDate
+      dueDate: newItem.dueDate,
+      contributions: newItem.moneySaved && newItem.moneySaved > 0 ? [
+        { contributorName: "You", amount: Number(newItem.moneySaved) }
+      ] : []
     };
 
     setFurnitureItems([...furnitureItems, newFurnitureItem]);
-    setNewItem({ name: "", value: 0, description: "", dueDate: "" });
+    setNewItem({ name: "", value: 0, targetValue: 0, moneySaved: 0, description: "", dueDate: "" });
     setIsAddDialogOpen(false);
     toast.success(`${newItem.name} has been added`);
   };
@@ -103,8 +123,51 @@ export default function Furniture() {
     setIsInviteDialogOpen(false);
   };
 
-  // Calculate total furniture value
-  const totalValue = furnitureItems.reduce((sum, item) => sum + item.value, 0);
+  const handleAddContribution = () => {
+    if (!selectedItemId || contribution.amount <= 0) return;
+
+    setFurnitureItems(items => 
+      items.map(item => {
+        if (item.id === selectedItemId) {
+          const existingContributions = item.contributions || [];
+          const existingIndex = existingContributions.findIndex(
+            c => c.contributorName === contribution.contributorName
+          );
+          
+          let newContributions: Contribution[];
+          if (existingIndex >= 0) {
+            // Update existing contribution
+            newContributions = [...existingContributions];
+            newContributions[existingIndex] = {
+              ...newContributions[existingIndex],
+              amount: newContributions[existingIndex].amount + contribution.amount
+            };
+          } else {
+            // Add new contribution
+            newContributions = [...existingContributions, {
+              contributorName: contribution.contributorName,
+              amount: contribution.amount
+            }];
+          }
+
+          // Update total money saved
+          const newMoneySaved = newContributions.reduce((sum, c) => sum + c.amount, 0);
+
+          toast.success(`Added ${formatCurrency(contribution.amount)} from ${contribution.contributorName}`);
+          return { ...item, contributions: newContributions, moneySaved: newMoneySaved };
+        }
+        return item;
+      })
+    );
+    
+    setContribution({ amount: 0, contributorName: "You" });
+    setIsContributeDialogOpen(false);
+  };
+
+  // Calculate total furniture value and money saved
+  const totalValue = furnitureItems.reduce((sum, item) => sum + item.targetValue, 0);
+  const totalSaved = furnitureItems.reduce((sum, item) => sum + item.moneySaved, 0);
+  const totalOutstanding = totalValue - totalSaved;
 
   return (
     <div className="min-h-screen bg-gray-900 pb-20">
@@ -128,71 +191,131 @@ export default function Furniture() {
         </div>
         
         <Card className="bg-indigo-500/10 border-indigo-300/20">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <div className="text-sm text-gray-400">Total Value</div>
-              <div className="text-3xl font-bold text-white">{formatCurrency(totalValue)}</div>
+          <CardContent className="pt-6 grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div className="text-sm text-gray-400">Total Target</div>
+              <div className="text-xl font-bold text-white">{formatCurrency(totalValue)}</div>
+            </div>
+            <div>
+              <div className="text-sm text-gray-400">Total Saved</div>
+              <div className="text-xl font-bold text-green-400">{formatCurrency(totalSaved)}</div>
+            </div>
+            <div>
+              <div className="text-sm text-gray-400">Outstanding</div>
+              <div className="text-xl font-bold text-pink-400">{formatCurrency(totalOutstanding)}</div>
             </div>
           </CardContent>
         </Card>
         
         <div className="space-y-4">
-          {furnitureItems.map((item) => (
-            <Card key={item.id} className="bg-gray-800/50 border-gray-700">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-white flex justify-between items-center">
-                  <span>{item.name}</span>
-                  <span className="text-lg font-medium">{formatCurrency(item.value)}</span>
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent className="space-y-3">
-                {item.description && (
-                  <p className="text-gray-400 text-sm">{item.description}</p>
-                )}
+          {furnitureItems.map((item) => {
+            const outstanding = item.targetValue - item.moneySaved;
+            const progressPercentage = item.targetValue > 0 ? 
+              Math.min(100, (item.moneySaved / item.targetValue) * 100) : 0;
+            
+            const yourContribution = item.contributions?.find(c => c.contributorName === "You")?.amount || 0;
+            const alexContribution = item.contributions?.find(c => c.contributorName === "Alex")?.amount || 0;
+
+            return (
+              <Card key={item.id} className="bg-gray-800/50 border-gray-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-white flex justify-between items-center">
+                    <span>{item.name}</span>
+                    <span className="text-lg font-medium">{formatCurrency(item.targetValue)}</span>
+                  </CardTitle>
+                </CardHeader>
                 
-                <div className="flex gap-2 items-center text-sm">
-                  <Calendar size={14} className="text-gray-400" />
-                  <span className="text-gray-300">
-                    {item.dueDate 
-                      ? `Target date: ${new Date(item.dueDate).toLocaleDateString()}`
-                      : "No target date set"}
-                  </span>
-                </div>
-                
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    {item.invited && item.invited.length > 0 ? (
-                      <div className="flex items-center">
-                        <div className="flex -space-x-2">
-                          {item.invited.map((name, idx) => (
-                            <div key={idx} className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-xs text-white border border-gray-800">
-                              {name.charAt(0)}
-                            </div>
-                          ))}
-                        </div>
-                        <span className="ml-2 text-sm text-gray-400">Sharing with {item.invited.join(", ")}</span>
-                      </div>
-                    ) : (
-                      <span className="text-sm text-gray-500">Not shared</span>
-                    )}
+                <CardContent className="space-y-3">
+                  {item.description && (
+                    <p className="text-gray-400 text-sm">{item.description}</p>
+                  )}
+                  
+                  <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-green-500 rounded-full" 
+                      style={{ width: `${progressPercentage}%` }}
+                    ></div>
                   </div>
                   
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="border-gray-700 bg-gray-800/80 hover:bg-gray-700 text-white"
-                    onClick={() => {
-                      setSelectedItemId(item.id);
-                      setIsInviteDialogOpen(true);
-                    }}
-                  >
-                    <UserPlus size={14} className="mr-1" /> Invite
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-400">Saved</p>
+                      <p className="text-white font-medium">{formatCurrency(item.moneySaved)}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-400">Outstanding</p>
+                      <p className="text-pink-400 font-medium">{formatCurrency(outstanding)}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mt-2 border-t border-gray-700 pt-3">
+                    <div>
+                      <p className="text-sm text-gray-400">Your contribution</p>
+                      <p className="text-white font-medium">{formatCurrency(yourContribution)}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-400">Alex's contribution</p>
+                      <p className="text-white font-medium">{formatCurrency(alexContribution)}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2 items-center text-sm">
+                    <Calendar size={14} className="text-gray-400" />
+                    <span className="text-gray-300">
+                      {item.dueDate 
+                        ? `Target date: ${new Date(item.dueDate).toLocaleDateString()}`
+                        : "No target date set"}
+                    </span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center mt-2">
+                    <div className="flex items-center gap-2">
+                      {item.invited && item.invited.length > 0 ? (
+                        <div className="flex items-center">
+                          <div className="flex -space-x-2">
+                            {item.invited.map((name, idx) => (
+                              <div key={idx} className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-xs text-white border border-gray-800">
+                                {name.charAt(0)}
+                              </div>
+                            ))}
+                          </div>
+                          <span className="ml-2 text-sm text-gray-400">Sharing with {item.invited.join(", ")}</span>
+                        </div>
+                      ) : (
+                        <span className="text-sm text-gray-500">Not shared</span>
+                      )}
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="border-gray-700 bg-gray-800/80 hover:bg-gray-700 text-white"
+                        onClick={() => {
+                          setSelectedItemId(item.id);
+                          setIsContributeDialogOpen(true);
+                        }}
+                      >
+                        <DollarSign size={14} className="mr-1" /> Add Money
+                      </Button>
+                      
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="border-gray-700 bg-gray-800/80 hover:bg-gray-700 text-white"
+                        onClick={() => {
+                          setSelectedItemId(item.id);
+                          setIsInviteDialogOpen(true);
+                        }}
+                      >
+                        <UserPlus size={14} className="mr-1" /> Invite
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
       
@@ -218,13 +341,25 @@ export default function Furniture() {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="price">Price*</Label>
+              <Label htmlFor="targetValue">Target Price*</Label>
               <Input 
-                id="price" 
-                placeholder="1000" 
+                id="targetValue" 
+                placeholder="2000" 
                 type="number"
-                value={newItem.value || ''} 
-                onChange={(e) => setNewItem({...newItem, value: parseFloat(e.target.value)})}
+                value={newItem.targetValue || ''} 
+                onChange={(e) => setNewItem({...newItem, targetValue: parseFloat(e.target.value), value: parseFloat(e.target.value)})}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="moneySaved">Initial Savings (Optional)</Label>
+              <Input 
+                id="moneySaved" 
+                placeholder="500" 
+                type="number"
+                value={newItem.moneySaved || ''} 
+                onChange={(e) => setNewItem({...newItem, moneySaved: parseFloat(e.target.value)})}
                 className="bg-gray-700 border-gray-600 text-white"
               />
             </div>
@@ -306,6 +441,68 @@ export default function Furniture() {
               className="border-gray-600 hover:bg-gray-700 text-white"
             >
               Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Contribute Money Dialog */}
+      <Dialog open={isContributeDialogOpen} onOpenChange={setIsContributeDialogOpen}>
+        <DialogContent className="bg-gray-800 border-gray-700 text-white">
+          <DialogHeader>
+            <DialogTitle>Add Money</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="amount">Amount</Label>
+              <Input 
+                id="amount" 
+                placeholder="100" 
+                type="number"
+                value={contribution.amount || ''} 
+                onChange={(e) => setContribution({...contribution, amount: parseFloat(e.target.value) || 0})}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="contributor">Contributor</Label>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant={contribution.contributorName === "You" ? "default" : "outline"}
+                  className={contribution.contributorName === "You" ? "bg-indigo-600" : "border-gray-600"}
+                  onClick={() => setContribution({...contribution, contributorName: "You"})}
+                >
+                  You
+                </Button>
+                <Button
+                  type="button"
+                  variant={contribution.contributorName === "Alex" ? "default" : "outline"}
+                  className={contribution.contributorName === "Alex" ? "bg-indigo-600" : "border-gray-600"}
+                  onClick={() => setContribution({...contribution, contributorName: "Alex"})}
+                >
+                  Alex
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setIsContributeDialogOpen(false)}
+              className="border-gray-600 hover:bg-gray-700 text-white"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleAddContribution}
+              className="bg-green-600 hover:bg-green-700"
+              disabled={contribution.amount <= 0}
+            >
+              <Save size={16} className="mr-2" /> Add Money
             </Button>
           </DialogFooter>
         </DialogContent>
