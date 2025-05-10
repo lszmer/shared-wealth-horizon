@@ -27,28 +27,44 @@ export default function Cash() {
     }
   };
   
+  // Calculate total budget for proportional sizing
+  const totalBudget = spendingCategories.reduce((sum, category) => sum + (category.budget || 0), 0);
+  
+  // Sort categories by budget size (larger budgets first)
+  const sortedCategories = [...spendingCategories].sort((a, b) => 
+    (b.budget || 0) - (a.budget || 0)
+  );
+  
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      <div className="p-4 space-y-4 flex flex-col h-[calc(100vh-80px)]">
-        <div className="flex items-center justify-end mb-2">
+    <div className="min-h-screen bg-gray-50 pb-20 flex flex-col h-screen">
+      <div className="p-4 flex flex-col h-[calc(100vh-80px)]">
+        <div className="flex items-center justify-end mb-4">
           <div className="text-right">
             <div className="text-sm text-gray-500 mb-1">Available This Month</div>
             <div className="text-4xl font-extrabold text-gray-800">{formattedTotalSpending}</div>
           </div>
         </div>
         
-        <div className="bg-white flex-grow overflow-hidden shadow-sm">
+        <div className="bg-white flex-grow overflow-hidden shadow-sm flex flex-col">
           <div className="p-3 border-b border-gray-100">
             <h2 className="text-lg font-medium text-gray-800">Monthly Spending</h2>
           </div>
           
-          <div className="flex flex-wrap">
-            {spendingCategories.map((category) => (
-              <SpendingTile
-                key={category.id}
-                category={category}
-                onClick={() => handleTileClick(category)}
-              />
+          <div className="flex flex-wrap flex-grow">
+            {sortedCategories.map((category) => (
+              <div 
+                key={category.id} 
+                className="w-full"
+                style={{ 
+                  height: `${((category.budget || 0) / totalBudget) * 100}%`,
+                  minHeight: '50px' // Ensure a minimum height for visibility
+                }}
+              >
+                <SpendingTile
+                  category={category}
+                  onClick={() => handleTileClick(category)}
+                />
+              </div>
             ))}
           </div>
         </div>
